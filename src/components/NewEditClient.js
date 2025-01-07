@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { show_alert } from '../functions';
 
-export const NewEditClient = () => {
+export const NewEditClient = forwardRef((props, ref) => {
 
     const [clientes, setClientes] = useState([]);
 
@@ -35,77 +35,69 @@ export const NewEditClient = () => {
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
 
-    const getClientes = async () => {
-        await axios.get("/clients/getAll")
-            .then(function (respuesta) {
-                console.log(respuesta.data.clientes);
-                setClientes(respuesta.data.clientes);
-            }).catch(function (error) {
-                show_alert("Error al obtener la información del cliente", "Error");
-                console.log(error);
-            });
-    }
+    useImperativeHandle(ref, () => ({
+        openModal(op, cliente) {
+            console.log(cliente);
+            console.log(op);
+            setIdCliente("");
+            setNombreCliente("");
+            setNombreComercial("");
+            setGrupoCliente("");
+            setDireccionCliente("");
+            setPaisCliente("");
+            setDepartamentoCliente("");
+            setMunicipioCliente("");
+            setTelefonoCliente("");
+            setCelularCliente("");
+            setEmailCliente("");
+            setNrcCliente("");
+            setNitCliente("");
+            setDuiCliente("");
+            setGiroCliente("");
+            setContactoCliente("");
+            setSitioWebCliente("");
+            setWhatsappCliente("");
+            setLatitud("");
+            setLongitud("");
+            setCtaContableCliente("");
+            setIdEmpleado("");
+            setActivo("");
 
-    const openModal = (op, cliente) => {
-        console.log(cliente);
-        setIdCliente("");
-        setNombreCliente("");
-        setNombreComercial("");
-        setGrupoCliente("");
-        setDireccionCliente("");
-        setPaisCliente("");
-        setDepartamentoCliente("");
-        setMunicipioCliente("");
-        setTelefonoCliente("");
-        setCelularCliente("");
-        setEmailCliente("");
-        setNrcCliente("");
-        setNitCliente("");
-        setDuiCliente("");
-        setGiroCliente("");
-        setContactoCliente("");
-        setSitioWebCliente("");
-        setWhatsappCliente("");
-        setLatitud("");
-        setLongitud("");
-        setCtaContableCliente("");
-        setIdEmpleado("");
-        setActivo("");
+            setOperation(op);
+            if (op === 1) {
+                setTitle("Registrar Cliente");
+            } else if (op === 2) {
+                setTitle("Editar Cliente");
 
-        setOperation(op);
-        if (op === 1) {
-            setTitle("Registrar Cliente");
-        } else if (op === 2) {
-            setTitle("Editar Cliente");
-
-            setIdCliente(cliente.idCliente);
-            setNombreCliente(cliente.nombreCliente);
-            setNombreComercial(cliente.nombreComercial);
-            setGrupoCliente(cliente.grupoCliente);
-            setDireccionCliente(cliente.direccionCliente);
-            setPaisCliente(cliente.paisCliente);
-            setDepartamentoCliente(cliente.departamentoCliente);
-            setMunicipioCliente(cliente.municipioCliente);
-            setTelefonoCliente(cliente.telefonoCliente);
-            setCelularCliente(cliente.celularCliente);
-            setEmailCliente(cliente.emailCliente);
-            setNrcCliente(cliente.nrcCliente);
-            setNitCliente(cliente.nitCliente);
-            setDuiCliente(cliente.duiCliente);
-            setGiroCliente(cliente.giroCliente);
-            setContactoCliente(cliente.contactoCliente);
-            setSitioWebCliente(cliente.sitioWebCliente);
-            setWhatsappCliente(cliente.whatsappCliente);
-            setLatitud(cliente.latitud);
-            setLongitud(cliente.longitud);
-            setCtaContableCliente(cliente.ctaContableCliente);
-            setIdEmpleado(cliente.idEmpleado);
-            setActivo(cliente.Activo);
+                setIdCliente(cliente.idCliente != null ? cliente.idCliente : "");
+                setNombreCliente(cliente.nombreCliente != null ? cliente.nombreCliente : "");
+                setNombreComercial(cliente.nombreComercial != null ? cliente.nombreComercial : "");
+                setGrupoCliente(cliente.grupoCliente != null ? cliente.grupoCliente : "");
+                setDireccionCliente(cliente.direccionCliente != null ? cliente.direccionCliente : "");
+                setPaisCliente(cliente.paisCliente != null ? cliente.paisCliente : "");
+                setDepartamentoCliente(cliente.departamentoCliente != null ? cliente.departamentoCliente : "");
+                setMunicipioCliente(cliente.municipioCliente != null ? cliente.municipioCliente : "");
+                setTelefonoCliente(cliente.telefonoCliente != null ? cliente.telefonoCliente : "");
+                setCelularCliente(cliente.celularCliente != null ? cliente.celularCliente : "");
+                setEmailCliente(cliente.emailCliente != null ? cliente.emailCliente : "");
+                setNrcCliente(cliente.nrcCliente != null ? cliente.nrcCliente : "");
+                setNitCliente(cliente.nitCliente != null ? cliente.nitCliente : "");
+                setDuiCliente(cliente.duiCliente != null ? cliente.duiCliente : "");
+                setGiroCliente(cliente.giroCliente != null ? cliente.giroCliente : "");
+                setContactoCliente(cliente.contactoCliente != null ? cliente.contactoCliente : "");
+                setSitioWebCliente(cliente.sitioWebCliente != null ? cliente.sitioWebCliente : "");
+                setWhatsappCliente(cliente.whatsappCliente != null ? cliente.whatsappCliente : "");
+                setLatitud(cliente.latitud != null ? cliente.latitud : "");
+                setLongitud(cliente.longitud != null ? cliente.longitud : "");
+                setCtaContableCliente(cliente.ctaContableCliente != null ? cliente.ctaContableCliente : "");
+                setIdEmpleado(cliente.idEmpleado != null ? cliente.idEmpleado : "");
+                setActivo(cliente.Activo != null ? cliente.Activo : "");
+            }
+            window.setTimeout(function () {
+                document.getElementById('nombreCliente').focus();
+            }, 500)
         }
-        window.setTimeout(function () {
-            document.getElementById('nombreCliente').focus();
-        }, 500)
-    }
+    }))
 
     const validarFormulario = () => {
         var parametros;
@@ -141,7 +133,7 @@ export const NewEditClient = () => {
             show_alert(msj, tipo);
             if (tipo === 0) {
                 document.getElementById("btnCerrar").click();
-                getClientes();
+                //getClientes();
             }
         }).catch(function (error) {
             show_alert("Error en la solicitud", "Error");
@@ -268,7 +260,7 @@ export const NewEditClient = () => {
                             <input type='text' id='activo' className='form-control' placeholder='Activo' value={activo}
                                 onChange={(e) => setActivo(e.target.value)}></input>
                         </div>
-
+                        <br />
                         <div className='d-grid col-6 mx-auto'>
                             <button className='btn btn-success' onClick={() => validarFormulario()}>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
@@ -279,4 +271,4 @@ export const NewEditClient = () => {
             </div>
         </div>
     )
-}
+})

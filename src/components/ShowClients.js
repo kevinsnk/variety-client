@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
@@ -6,6 +6,8 @@ import { show_alert } from '../functions';
 import { NewEditClient } from './NewEditClient';
 
 export const ShowClients = () => {
+
+    const clienteModal = useRef();
 
     const [clientes, setClientes] = useState([]);
 
@@ -159,7 +161,7 @@ export const ShowClients = () => {
                 <div className='row mt-3'>
                     <div className='col-md-4 offset-md-4'>
                         <div className='d-grid mx-auto'>
-                            <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => openModal(1)}>
+                            <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(1)}>
                                 <i className='fa-solid fa-circle-plus'></i>Añadir
                             </button>
                         </div>
@@ -179,7 +181,7 @@ export const ShowClients = () => {
                                         <td>{cliente.idCliente}</td>
                                         <td>{cliente.nombreCliente}</td>
                                         <td>
-                                            <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => openModal(2, cliente)}>
+                                            <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
                                             &nbsp;
@@ -194,7 +196,7 @@ export const ShowClients = () => {
                     </div>
                 </div>
             </div>
-            <NewEditClient />
+            <NewEditClient ref={clienteModal} />
         </div>
     )
 }
