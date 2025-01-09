@@ -3,26 +3,26 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { show_alert } from '../../functions';
-import { NewEditEmpleados } from './NewEditEmpleados';
+import { NewEditClient } from './NewEditClient';
 
-export const ShowEmpleados = () => {
+export const ShowClients = () => {
 
-    const empleadoModal = useRef();
-    const [empleados, setEmpleados] = useState([]);
+    const clienteModal = useRef();
+    const [clientes, setClientes] = useState([]);
 
     useEffect(() => {
-        getEmpleados();
+        getClientes();
     }, []);
 
-    const getEmpleados = async () => {
-        await axios.get("/empleados/getAll")
-            .then(function (respuesta) {
-                console.log(respuesta.data.empleados);
-                setEmpleados(respuesta.data.empleados);
-            }).catch(function (error) {
-                show_alert("Error al obtener la información del empleado", "error");
-                console.log(error);
-            });
+    const getClientes = async () => {
+        await axios.get("/clients/getAll")
+        .then(function (respuesta) {
+            console.log(respuesta.data.clientes);
+            setClientes(respuesta.data.clientes);
+        }).catch(function (error) {
+            show_alert("Error al obtener la información del cliente", "error");
+            console.log(error);
+        });
     }
 
     return (
@@ -31,7 +31,7 @@ export const ShowEmpleados = () => {
                 <div className='row mt-3'>
                     <div className='col-md-4 offset-md-4'>
                         <div className='d-grid mx-auto'>
-                            <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalEmpleado' onClick={() => empleadoModal.current.openModal(1)}>
+                            <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(1)}>
                                 <i className='fa-solid fa-circle-plus'></i>Añadir
                             </button>
                         </div>
@@ -46,12 +46,12 @@ export const ShowEmpleados = () => {
                                 <tr><th>ID</th><th>NOMBRE</th><th>ACCIONES</th></tr>
                             </thead>
                             <tbody>
-                                {empleados.map((empleado, i) => (
-                                    <tr key={empleado.idEmpleado}>
-                                        <td>{empleado.idEmpleado}</td>
-                                        <td>{empleado.nombreEmpleado}</td>
+                                {clientes.map((cliente, i) => (
+                                    <tr key={cliente.idCliente}>
+                                        <td>{cliente.idCliente}</td>
+                                        <td>{cliente.nombreCliente}</td>
                                         <td>
-                                            <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalEmpleado' onClick={() => empleadoModal.current.openModal(2, empleado)}>
+                                            <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
                                             &nbsp;
@@ -66,7 +66,7 @@ export const ShowEmpleados = () => {
                     </div>
                 </div>
             </div>
-            <NewEditEmpleados ref={empleadoModal} />
+            <NewEditClient ref={clienteModal} />
         </div>
     )
 }

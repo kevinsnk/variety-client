@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ShowClients } from './components/ShowClients.js';
+import { ShowClients } from './components/clientes/ShowClients.js';
 import { ShowEmpleados } from './components/empleados/ShowEmpleados.js';
 
 function App() {

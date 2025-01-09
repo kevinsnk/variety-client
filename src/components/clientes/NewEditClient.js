@@ -1,12 +1,8 @@
 import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { show_alert } from '../functions';
+import { show_alert } from '../../functions';
 
 export const NewEditClient = forwardRef((props, ref) => {
-
-    const [clientes, setClientes] = useState([]);
 
     const [idCliente, setIdCliente] = useState("");
     const [nombreCliente, setNombreCliente] = useState("");
@@ -113,7 +109,8 @@ export const NewEditClient = forwardRef((props, ref) => {
             parametros = {
                 nombreCliente: nombreCliente.trim(),
                 nombreComercial: nombreComercial.trim(),
-                grupoCliente: grupoCliente.trim()
+                grupoCliente: grupoCliente.trim(),
+                idEmpleado : idEmpleado.trim()
             };
             metodo = "POST"
             if (operation === 1) {
@@ -128,15 +125,15 @@ export const NewEditClient = forwardRef((props, ref) => {
 
     const enviarSolicitud = async (parametros, metodo, url) => {
         await axios({ method: metodo, url: url, data: parametros }).then(function (respuesta) {
-            var tipo = respuesta.data[0];
-            var msj = respuesta.data[1];
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
             show_alert(msj, tipo);
             if (tipo === 0) {
                 document.getElementById("btnCerrar").click();
                 //getClientes();
             }
         }).catch(function (error) {
-            show_alert("Error en la solicitud", "Error");
+            show_alert("Error en la solicitud", "error");
             console.log(error);
         });
     }

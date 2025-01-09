@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
 import { show_alert } from '../../functions';
 
-export const NewEditEmpleados = () => {
+export const NewEditEmpleados = forwardRef((props, ref) => {
 
     const [empleados, setEmpleados] = useState([]);
 
@@ -21,49 +21,40 @@ export const NewEditEmpleados = () => {
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
 
-    const getClientes = async () => {
-        await axios.get("/empleado/getAll")
-            .then(function (respuesta) {
-                console.log(respuesta.data.empleados);
-                setEmpleados(respuesta.data.empleados);
-            }).catch(function (error) {
-                show_alert("Error al obtener la información del cliente", "Error");
-                console.log(error);
-            });
-    }
+    useImperativeHandle(ref, () => ({
+        openModal(op, empleado) {
+            console.log(empleado);
+            setIdEmpleado("");
+            setNombreEmpleado("");
+            setApellidoEmpleado("");
+            setDireccionEmpleado("");
+            setTelefonoEmpleado("");
+            setCelularEmpleado("");
+            setEmailEmpleado("");
+            setActivo(0);
+            setTipoEmpleado("");
 
-    const openModal = (op, empleado) => {
-        console.log(empleado);
-        setIdEmpleado("");
-        setNombreEmpleado("");
-        setApellidoEmpleado("");
-        setDireccionEmpleado("");
-        setTelefonoEmpleado("");
-        setCelularEmpleado("");
-        setEmailEmpleado("");
-        setActivo(0);
-        setTipoEmpleado("");
+            setOperation(op);
+            if (op === 1) {
+                setTitle("Registrar Empleado");
+            } else if (op === 2) {
+                setTitle("Editar Empleado");
 
-        setOperation(op);
-        if (op === 1) {
-            setTitle("Registrar Empleado");
-        } else if (op === 2) {
-            setTitle("Editar Empleado");
-
-            setIdEmpleado(empleado.idEmpleado);
-            setNombreEmpleado(empleado.nombreEmpleado);
-            setApellidoEmpleado(empleado.apellidoEmpleado);
-            setDireccionEmpleado(empleado.direccionEmpleado);
-            setTelefonoEmpleado(empleado.telefonoEmpleado);
-            setCelularEmpleado(empleado.celularEmpleado);
-            setEmailEmpleado(empleado.emailEmpleado);
-            setActivo(empleado.activo);
-            setTipoEmpleado(empleado.tipoEmpleado);
+                setIdEmpleado(empleado.idEmpleado);
+                setNombreEmpleado(empleado.nombreEmpleado);
+                setApellidoEmpleado(empleado.apellidoEmpleado);
+                setDireccionEmpleado(empleado.direccionEmpleado);
+                setTelefonoEmpleado(empleado.telefonoEmpleado);
+                setCelularEmpleado(empleado.celularEmpleado);
+                setEmailEmpleado(empleado.emailEmpleado);
+                setActivo(empleado.activo);
+                setTipoEmpleado(empleado.tipoEmpleado);
+            }
+            window.setTimeout(function () {
+                document.getElementById('nombreEmpleado').focus();
+            }, 500)
         }
-        window.setTimeout(function () {
-            document.getElementById('nombreEmpleado').focus();
-        }, 500)
-    }
+    }))
 
     const validarFormulario = () => {
         var parametros;
@@ -79,13 +70,17 @@ export const NewEditEmpleados = () => {
             parametros = {
                 nombreEmpleado: nombreEmpleado.trim(),
                 apellidoEmpleado: apellidoEmpleado.trim(),
+                direccionEmpleado: direccionEmpleado.trim(),
+                telefonoEmpleado: telefonoEmpleado.trim(),
+                celularEmpleado: celularEmpleado.trim(),
+                emailEmpleado: emailEmpleado.trim(),
                 tipoEmpleado: tipoEmpleado.trim()
             };
             metodo = "POST"
             if (operation === 1) {
-                url = "/clients/saveEmpleado";
+                url = "/empleados/saveEmpleado";
             } else {
-                url = "/clients/editEmpleado";
+                url = "/empleados/editEmpleado";
             }
 
             enviarSolicitud(parametros, metodo, url);
@@ -94,15 +89,15 @@ export const NewEditEmpleados = () => {
 
     const enviarSolicitud = async (parametros, metodo, url) => {
         await axios({ method: metodo, url: url, data: parametros }).then(function (respuesta) {
-            var tipo = respuesta.data[0];
-            var msj = respuesta.data[1];
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
             show_alert(msj, tipo);
             if (tipo === 0) {
                 document.getElementById("btnCerrar").click();
-                getClientes();
+                //getClientes();
             }
         }).catch(function (error) {
-            show_alert("Error en la solicitud", "Error");
+            show_alert("Servicio no disponible.", "error");
             console.log(error);
         });
     }
@@ -137,8 +132,22 @@ export const NewEditEmpleados = () => {
                             <input type='text' id='telefonoEmpleado' className='form-control' placeholder='Teléfono Empleado' value={telefonoEmpleado}
                                 onChange={(e) => setTelefonoEmpleado(e.target.value)}></input>
                         </div>
-                        
-
+                        <div className='form-group'>
+                            <label>Celular Empleado</label>
+                            <input type='text' id='celularEmpleado' className='form-control' placeholder='Celular Empleado' value={celularEmpleado}
+                                onChange={(e) => setCelularEmpleado(e.target.value)}></input>
+                        </div>
+                        <div className='form-group'>
+                            <label>Email Empleado</label>
+                            <input type='text' id='emailEmpleado' className='form-control' placeholder='Email Empleado' value={emailEmpleado}
+                                onChange={(e) => setEmailEmpleado(e.target.value)}></input>
+                        </div>
+                        <div className='form-group'>
+                            <label>Tipo Empleado</label>
+                            <input type='text' id='tipoEmpleado' className='form-control' placeholder='Tipo Empleado' value={tipoEmpleado}
+                                onChange={(e) => setTipoEmpleado(e.target.value)}></input>
+                        </div>
+                        <br />
                         <div className='d-grid col-6 mx-auto'>
                             <button className='btn btn-success' onClick={() => validarFormulario()}>
                                 <i className='fa-solid fa-floppy-disk'></i> Guardar
@@ -149,4 +158,4 @@ export const NewEditEmpleados = () => {
             </div>
         </div>
     )
-}
+})
