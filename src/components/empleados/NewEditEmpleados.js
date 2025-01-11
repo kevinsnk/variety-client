@@ -68,6 +68,7 @@ export const NewEditEmpleados = forwardRef((props, ref) => {
             show_alert("El tipo de empleado no puede ir vacío", "warning");
         } else {
             parametros = {
+                idEmpleado: idEmpleado,
                 nombreEmpleado: nombreEmpleado.trim(),
                 apellidoEmpleado: apellidoEmpleado.trim(),
                 direccionEmpleado: direccionEmpleado.trim(),
@@ -92,9 +93,12 @@ export const NewEditEmpleados = forwardRef((props, ref) => {
             var tipo = respuesta.data.codigo;
             var msj = respuesta.data.descripcion;
             show_alert(msj, tipo);
-            if (tipo === 0) {
+            if (tipo === "0") {
                 document.getElementById("btnCerrar").click();
-                //getClientes();
+                show_alert(msj, 'success');
+                props.getEmpleados();
+            } else {
+                show_alert(msj, 'warning');
             }
         }).catch(function (error) {
             show_alert("Servicio no disponible.", "error");

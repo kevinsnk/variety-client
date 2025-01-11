@@ -15,6 +15,7 @@ export const ShowClients = () => {
     }, []);
 
     const getClientes = async () => {
+        console.log("Entro a getClientes()");
         await axios.get("/clients/getAll")
         .then(function (respuesta) {
             console.log(respuesta.data.clientes);
@@ -66,7 +67,7 @@ export const ShowClients = () => {
                     </div>
                 </div>
             </div>
-            <NewEditClient ref={clienteModal} />
+            <NewEditClient ref={clienteModal} getclientes={()=> getClientes()} />
         </div>
     )
 }

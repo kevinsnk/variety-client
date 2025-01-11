@@ -1,4 +1,4 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useState, forwardRef, useImperativeHandle, act } from 'react';
 import axios from 'axios';
 import { show_alert } from '../../functions';
 
@@ -107,10 +107,29 @@ export const NewEditClient = forwardRef((props, ref) => {
             show_alert("El grupo cliente no puede ir vacío", "warning");
         } else {
             parametros = {
+                idCliente : idCliente.trim(),
                 nombreCliente: nombreCliente.trim(),
                 nombreComercial: nombreComercial.trim(),
                 grupoCliente: grupoCliente.trim(),
-                idEmpleado : idEmpleado.trim()
+                direccionCliente : direccionCliente.trim(),
+                paisCliente : paisCliente.trim(),
+                departamentoCliente : departamentoCliente.trim(),
+                municipioCliente : municipioCliente.trim(),
+                telefonoCliente : telefonoCliente.trim(),
+                celularCliente : celularCliente.trim(),
+                emailCliente : emailCliente.trim(),
+                nrcCliente : nrcCliente.trim(),
+                nitCliente : nitCliente.trim(),
+                duiCliente : duiCliente.trim(),
+                giroCliente : giroCliente.trim(),
+                contactoCliente : contactoCliente.trim(),
+                sitioWebCliente : sitioWebCliente.trim(),
+                whatsappCliente : whatsappCliente.trim(),
+                latitud : latitud.trim(),
+                longitud : longitud.trim(),
+                ctaContableCliente : ctaContableCliente.trim(),
+                idEmpleado : idEmpleado.trim(),
+                activo : activo.trim()
             };
             metodo = "POST"
             if (operation === 1) {
@@ -127,16 +146,30 @@ export const NewEditClient = forwardRef((props, ref) => {
         await axios({ method: metodo, url: url, data: parametros }).then(function (respuesta) {
             var tipo = respuesta.data.codigo;
             var msj = respuesta.data.descripcion;
-            show_alert(msj, tipo);
-            if (tipo === 0) {
+            if (tipo === "0") {
                 document.getElementById("btnCerrar").click();
-                //getClientes();
+                show_alert(msj, 'success');
+                props.getEmpleados();
+            }else{
+                show_alert(msj, 'warning');
             }
         }).catch(function (error) {
             show_alert("Error en la solicitud", "error");
             console.log(error);
         });
     }
+
+    const getEmpleados = async () => {
+        await axios.get("/empleados/getAll")
+            .then(function (respuesta) {
+                console.log(respuesta.data.empleados);
+                setEmpleados(respuesta.data.empleados);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información del empleado", "error");
+                console.log(error);
+            });
+    }
+    
     return (
         <div id='modalClients' className='modal fade bd-example-modal-lg' aria-hidden='true'>
             <div className='modal-dialog modal-lg'>

@@ -43,13 +43,15 @@ export const ShowEmpleados = () => {
                     <div className='table-responsive'>
                         <table className='table table-bordered'>
                             <thead>
-                                <tr><th>ID</th><th>NOMBRE</th><th>ACCIONES</th></tr>
+                                <tr><th>ID</th><th>NOMBRE</th><th>Tipo Empleado</th><th>Estado</th><th>ACCIONES</th></tr>
                             </thead>
                             <tbody>
                                 {empleados.map((empleado, i) => (
                                     <tr key={empleado.idEmpleado}>
                                         <td>{empleado.idEmpleado}</td>
-                                        <td>{empleado.nombreEmpleado}</td>
+                                        <td>{empleado.nombreEmpleado.trim() + ' ' + empleado.apellidoEmpleado.trim()}</td>
+                                        <td>{empleado.tipoEmpleado}</td>
+                                        <td>{empleado.activo}</td>
                                         <td>
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalEmpleado' onClick={() => empleadoModal.current.openModal(2, empleado)}>
                                                 <i className='fa-solid fa-edit' ></i>
@@ -66,7 +68,7 @@ export const ShowEmpleados = () => {
                     </div>
                 </div>
             </div>
-            <NewEditEmpleados ref={empleadoModal} />
+            <NewEditEmpleados ref={empleadoModal} getEmpleados={() => getEmpleados()}/>
         </div>
     )
 }
