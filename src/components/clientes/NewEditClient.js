@@ -28,11 +28,15 @@ export const NewEditClient = forwardRef((props, ref) => {
     const [idEmpleado, setIdEmpleado] = useState("");
     const [activo, setActivo] = useState("");
 
+    const [empleados, setEmpleados] = useState([]);
+
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
 
     useImperativeHandle(ref, () => ({
         openModal(op, cliente) {
+            getEmpleados();
+
             console.log(cliente);
             console.log(op);
             setIdCliente("");
@@ -281,9 +285,14 @@ export const NewEditClient = forwardRef((props, ref) => {
                                 onChange={(e) => setLongitud(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
-                            <label>ID Empleado</label>
-                            <input type='text' id='idEmpleado' className='form-control' placeholder='ID Empleado' value={idEmpleado}
-                                onChange={(e) => setIdEmpleado(e.target.value)}></input>
+                            <label>Empleado</label>
+                                <select  id='idEmpleado' className='form-control' placeholder='ID Empleado' value={idEmpleado}
+                                onChange={(e) => setIdEmpleado(e.target.value)}>
+                                <option value="">Seleccionar una opción</option>
+                                {empleados.map((empleado, i) => (
+                                   <option value={empleado.idEmpleado}>{empleado.nombreEmpleado}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
                             <label>Activo</label>

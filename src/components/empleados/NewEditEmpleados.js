@@ -6,8 +6,6 @@ import { show_alert } from '../../functions';
 
 export const NewEditEmpleados = forwardRef((props, ref) => {
 
-    const [empleados, setEmpleados] = useState([]);
-
     const [idEmpleado, setIdEmpleado] = useState("");
     const [nombreEmpleado, setNombreEmpleado] = useState("");
     const [apellidoEmpleado, setApellidoEmpleado] = useState("");
@@ -148,8 +146,12 @@ export const NewEditEmpleados = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Tipo Empleado</label>
-                            <input type='text' id='tipoEmpleado' className='form-control' placeholder='Tipo Empleado' value={tipoEmpleado}
-                                onChange={(e) => setTipoEmpleado(e.target.value)}></input>
+                            <select id='tipoEmpleado' className='form-control' value={tipoEmpleado}
+                                onChange={(e) => setTipoEmpleado(e.target.value)}>
+                                    <option value="">Seleccionar una opción</option>
+                                    <option value="1">Administrador</option>
+                                    <option value="2">Operador</option>
+                                </select>
                         </div>
                         <br />
                         <div className='d-grid col-6 mx-auto'>
