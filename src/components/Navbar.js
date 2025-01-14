@@ -18,6 +18,9 @@ const Navbar = () => {
           <li>
             <a href="/empleados">Empleados</a>
           </li>
+          <li>
+            <a href="/paquetes">Paquetes</a>
+          </li>
         </ul>
       </div>
       <div className="navbar-right">
