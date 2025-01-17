@@ -111,29 +111,29 @@ export const NewEditClient = forwardRef((props, ref) => {
             show_alert("El grupo cliente no puede ir vacío", "warning");
         } else {
             parametros = {
-                idCliente : idCliente.trim(),
+                idCliente: idCliente.trim(),
                 nombreCliente: nombreCliente.trim(),
                 nombreComercial: nombreComercial.trim(),
                 grupoCliente: grupoCliente.trim(),
-                direccionCliente : direccionCliente.trim(),
-                paisCliente : paisCliente.trim(),
-                departamentoCliente : departamentoCliente.trim(),
-                municipioCliente : municipioCliente.trim(),
-                telefonoCliente : telefonoCliente.trim(),
-                celularCliente : celularCliente.trim(),
-                emailCliente : emailCliente.trim(),
-                nrcCliente : nrcCliente.trim(),
-                nitCliente : nitCliente.trim(),
-                duiCliente : duiCliente.trim(),
-                giroCliente : giroCliente.trim(),
-                contactoCliente : contactoCliente.trim(),
-                sitioWebCliente : sitioWebCliente.trim(),
-                whatsappCliente : whatsappCliente.trim(),
-                latitud : latitud.trim(),
-                longitud : longitud.trim(),
-                ctaContableCliente : ctaContableCliente.trim(),
-                idEmpleado : idEmpleado.trim(),
-                activo : activo.trim()
+                direccionCliente: direccionCliente.trim(),
+                paisCliente: paisCliente.trim(),
+                departamentoCliente: departamentoCliente.trim(),
+                municipioCliente: municipioCliente.trim(),
+                telefonoCliente: telefonoCliente.trim(),
+                celularCliente: celularCliente.trim(),
+                emailCliente: emailCliente.trim(),
+                nrcCliente: nrcCliente.trim(),
+                nitCliente: nitCliente.trim(),
+                duiCliente: duiCliente.trim(),
+                giroCliente: giroCliente.trim(),
+                contactoCliente: contactoCliente.trim(),
+                sitioWebCliente: sitioWebCliente.trim(),
+                whatsappCliente: whatsappCliente.trim(),
+                latitud: latitud.trim(),
+                longitud: longitud.trim(),
+                ctaContableCliente: ctaContableCliente.trim(),
+                idEmpleado: idEmpleado.trim(),
+                activo: activo.trim()
             };
             metodo = "POST"
             if (operation === 1) {
@@ -154,7 +154,7 @@ export const NewEditClient = forwardRef((props, ref) => {
                 document.getElementById("btnCerrar").click();
                 show_alert(msj, 'success');
                 props.getEmpleados();
-            }else{
+            } else {
                 show_alert(msj, 'warning');
             }
         }).catch(function (error) {
@@ -173,7 +173,7 @@ export const NewEditClient = forwardRef((props, ref) => {
                 console.log(error);
             });
     }
-    
+
     return (
         <div id='modalClients' className='modal fade bd-example-modal-lg' aria-hidden='true'>
             <div className='modal-dialog modal-lg'>
@@ -286,11 +286,11 @@ export const NewEditClient = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Empleado</label>
-                                <select  id='idEmpleado' className='form-control' placeholder='ID Empleado' value={idEmpleado}
+                            <select id='idEmpleado' className='form-control' placeholder='ID Empleado' value={idEmpleado}
                                 onChange={(e) => setIdEmpleado(e.target.value)}>
                                 <option value="">Seleccionar una opción</option>
                                 {empleados.map((empleado, i) => (
-                                   <option value={empleado.idEmpleado}>{empleado.nombreEmpleado}</option>
+                                    <option value={empleado.idEmpleado}>{empleado.nombreEmpleado}</option>
                                 ))}
                             </select>
                         </div>

@@ -15,18 +15,24 @@ export const NewEditPedidos = forwardRef((props, ref) => {
     const [fecha, setFecha] = useState("");
     const [fechaEntrega, setFechaEntrega] = useState("");
     const [idCliente, setIdCliente] = useState("");
-    const [nombreCliente, setNombreCliente] = useState(0);
+    const [nombreCliente, setNombreCliente] = useState("");
     const [idEmpleado, setIdEmpleado] = useState("");
-    const [sumas, setSumas] = useState("");
-    const [impuestos, setImpuestos] = useState("");
+    const [sumas, setSumas] = useState(0);
+    const [impuesto, setImpuesto] = useState(0);
     const [total, setTotal] = useState(0);
+
+    const [empleados, setEmpleados] = useState([]);
+    const [clientes, setClientes] = useState([]);
 
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
 
     useImperativeHandle(ref, () => ({
         openModal(op, pedido) {
-            console.log(pedido);
+            getEmpleados();
+            getClientes();
+
+            console.log("pedido", pedido);
             setIdPedido("");
             setCancelado("");
             setEstado("");
@@ -37,9 +43,9 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             setIdCliente("");
             setNombreCliente("");
             setIdEmpleado("");
-            setSumas("");
-            setImpuestos("");
-            setTotal("");
+            setSumas(0);
+            setImpuesto(0);
+            setTotal(0);
 
             setOperation(op);
             if (op === 1) {
@@ -47,19 +53,19 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             } else if (op === 2) {
                 setTitle("Editar Pedidos");
 
-                setIdPedido(pedido.setIdPedido);
-                setCancelado(pedido.setCancelado);
-                setEstado(pedido.setEstado);
-                setTipo(pedido.setTipo);
-                setNumero(pedido.setNumero);
-                setFecha(pedido.setFecha);
-                setFechaEntrega(pedido.setFechaEntrega);
-                setIdCliente(pedido.setIdCliente);
-                setNombreCliente(pedido.setNombreCliente);
-                setIdEmpleado(pedido.setIdEmpleado);
-                setSumas(pedido.setSumas);
-                setImpuestos(pedido.setImpuestos);
-                setTotal(pedido.setTotal);
+                setIdPedido(pedido.idPedido != null ? pedido.idPedido : "");
+                setCancelado(pedido.cancelado != null ? pedido.cancelado : "");
+                setEstado(pedido.estado != null ? pedido.estado : "");
+                setTipo(pedido.tipo != null ? pedido.tipo : "");
+                setNumero(pedido.numero != null ? pedido.numero : "");
+                setFecha(pedido.fecha != null ? pedido.fecha : "");
+                setFechaEntrega(pedido.fechaEntrega != null ? pedido.fechaEntrega : "");
+                setIdCliente(pedido.cliente != null ? pedido.cliente.idCliente : "");
+                setNombreCliente(pedido.cliente != null ? pedido.cliente.nombreEmpleado : "");
+                setIdEmpleado(pedido.empleado != null ? pedido.empleado.idEmpleado : 0);
+                setSumas(pedido.sumas != null ? pedido.sumas : 0);
+                setImpuesto(pedido.impuesto != null ? pedido.impuesto : 0);
+                setTotal(pedido.total != null ? pedido.total : 0);
             }
             window.setTimeout(function () {
                 document.getElementById('cancelado').focus();
@@ -78,24 +84,24 @@ export const NewEditPedidos = forwardRef((props, ref) => {
         } else {
             parametros = {
                 idPedido: idPedido,
-                cancelado: cancelado.trim(),
-                estado: estado.trim(),
-                tipo: tipo.trim(),
-                numero: numero.trim(),
-                fecha: fecha.trim(),
-                fechaEntrega: fechaEntrega.trim(),
-                idCliente: idCliente.trim(),
-                nombreCliente: nombreCliente.trim(),
-                idEmpleado: idEmpleado.trim(),
-                sumas: sumas.trim(),
-                impuestos: impuestos.trim(),
-                total: total.trim(),
+                cancelado: cancelado,
+                estado: estado,
+                tipo: tipo,
+                numero: numero,
+                fecha: fecha,
+                fechaEntrega: fechaEntrega,
+                idCliente: idCliente,
+                nombreCliente: nombreCliente,
+                idEmpleado: idEmpleado,
+                sumas: sumas,
+                impuesto: impuesto,
+                total: total,
             };
             metodo = "POST"
             if (operation === 1) {
-                url = "/pedidos/savePedidos";
+                url = "/pedidos/savePedido";
             } else {
-                url = "/pedidos/editPedidos";
+                url = "/pedidos/editPedido";
             }
 
             enviarSolicitud(parametros, metodo, url);
@@ -120,6 +126,29 @@ export const NewEditPedidos = forwardRef((props, ref) => {
         });
     }
 
+    const getEmpleados = async () => {
+        await axios.get("/empleados/getAll")
+            .then(function (respuesta) {
+                console.log(respuesta.data.empleados);
+                setEmpleados(respuesta.data.empleados);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información del empleado", "error");
+                console.log(error);
+            });
+    }
+
+    const getClientes = async () => {
+        console.log("Entro a getClientes()");
+        await axios.get("/clients/getAll")
+            .then(function (respuesta) {
+                console.log(respuesta.data.clientes);
+                setClientes(respuesta.data.clientes);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información del cliente", "error");
+                console.log(error);
+            });
+    }
+
     return (
         <div id='modalPedido' className='modal fade bd-example-modal-lg' aria-hidden='true'>
             <div className='modal-dialog modal-lg'>
@@ -131,7 +160,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                     <div className='modal-body'>
                         <div className='form-group'>
                             <input type='hidden' id='idPedido'></input>
-                            <label>Nombre Pedido</label>
+                            <label>Cancelado</label>
                             <input type='text' id='cancelado' className='form-control' placeholder='Cancelado' value={cancelado}
                                 onChange={(e) => setCancelado(e.target.value)}></input>
                         </div>
@@ -152,28 +181,33 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Fecha</label>
-                            <input type='text' id='fecha' className='form-control' placeholder='Fecha' value={fecha}
+                            <input type='date' id='fecha' className='form-control' placeholder="dd-mm-yyyy" value={fecha}
                                 onChange={(e) => setFecha(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
                             <label>Fecha Entreha</label>
-                            <input type='text' id='fechaEntrega' className='form-control' placeholder='Fecha entrega' value={fechaEntrega}
+                            <input type='date' id='fechaEntrega' className='form-control' placeholder="dd-mm-yyyy" value={fechaEntrega}
                                 onChange={(e) => setFechaEntrega(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
-                            <label>Id Cliente</label>
-                            <input type='text' id='idCliente' className='form-control' placeholder='Id Cliente' value={idCliente}
-                                onChange={(e) => setIdCliente(e.target.value)}></input>
+                            <label>Cliente</label>
+                            <select id='idCliente' className='form-control' placeholder='Cliente' value={idCliente}
+                                onChange={(e) => setIdCliente(e.target.value)}>
+                                <option value="">Seleccionar una opción</option>
+                                {clientes.map((cliente, i) => (
+                                    <option value={cliente.idCliente}>{cliente.nombreCliente}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
-                            <label>nombre Cliente</label>
-                            <input type='text' id='nombreCliente' className='form-control' placeholder='Nombre Cliente' value={nombreCliente}
-                                onChange={(e) => setNombreCliente(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Id Empleado</label>
-                            <input type='text' id='idEmpleado' className='form-control' placeholder='Id Empleado' value={idEmpleado}
-                                onChange={(e) => setIdEmpleado(e.target.value)}></input>
+                            <label>Empleado</label>
+                            <select id='idEmpleado' className='form-control' placeholder='Empleado' value={idEmpleado}
+                                onChange={(e) => setIdEmpleado(e.target.value)}>
+                                <option value="">Seleccionar una opción</option>
+                                {empleados.map((empleado, i) => (
+                                    <option value={empleado.idEmpleado}>{empleado.nombreEmpleado}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
                             <label>Sumas</label>
@@ -182,8 +216,8 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Impuesto</label>
-                            <input type='text' id='impuestos' className='form-control' placeholder='Impuesto' value={impuestos}
-                                onChange={(e) => setImpuestos(e.target.value)}></input>
+                            <input type='text' id='impuestos' className='form-control' placeholder='Impuesto' value={impuesto}
+                                onChange={(e) => setImpuesto(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
                             <label>Total</label>
@@ -194,10 +228,10 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                             <label>Tipo Pedido</label>
                             <select id='tipo' className='form-control' value={tipo}
                                 onChange={(e) => setTipo(e.target.value)}>
-                                    <option value="">Seleccionar una opción</option>
-                                    <option value="1">Administrador</option>
-                                    <option value="2">Operador</option>
-                                </select>
+                                <option value="">Seleccionar una opción</option>
+                                <option value="1">Administrador</option>
+                                <option value="2">Operador</option>
+                            </select>
                         </div>
                         <br />
                         <div className='d-grid col-6 mx-auto'>

@@ -43,20 +43,15 @@ export const ShowPedidos = () => {
                     <div className='table-responsive'>
                         <table className='table table-bordered'>
                             <thead>
-                                <tr><th>ID</th><th>NOMBRE</th><th>Tipo de Pedidos</th><th>Estado</th><th>ACCIONES</th></tr>
+                                <tr><th>ID</th><th>ESTADO</th><th>CLIENTE</th><th>EMPLEADO</th><th>TOTAL</th><th>ACCIONES</th></tr>
                             </thead>
                             <tbody>
                                 {pedidos.map((pedidos, i) => (
                                     <tr key={pedidos.idPedido}>
-                                        <td>{pedidos.cancelado}</td>
+                                        <td>{pedidos.idPedido}</td>
                                         <td>{pedidos.estado} </td>
-                                        <td>{pedidos.tipo}</td>
-                                        <td>{pedidos.numero}</td>
-                                        <td>{pedidos.idCliente} </td>
-                                        <td>{pedidos.nombreCliente}</td>
-                                        <td>{pedidos.idEmpleado}</td>
-                                        <td>{pedidos.sumas} </td>
-                                        <td>{pedidos.impuestos}</td>
+                                        <td>{pedidos.cliente?.nombreCliente} </td>
+                                        <td>{pedidos.empleado?.nombreEmpleado + ' ' + pedidos.empleado?.apellidoEmpleado}</td>
                                         <td>{pedidos.total}</td>
                                         <td>
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalPedidos' onClick={() => pedidoModal.current.openModal(2, pedidos)}>
