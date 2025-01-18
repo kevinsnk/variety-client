@@ -1,8 +1,5 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-import { ShowPedidos } from './ShowPedidos';
 import { show_alert } from '../../functions';
 
 export const NewEditPedidos = forwardRef((props, ref) => {
@@ -32,6 +29,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             getEmpleados();
             getClientes();
 
+            console.log("op", op);
             console.log("pedido", pedido);
             setIdPedido("");
             setCancelado("");
@@ -61,7 +59,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                 setFecha(pedido.fecha != null ? pedido.fecha : "");
                 setFechaEntrega(pedido.fechaEntrega != null ? pedido.fechaEntrega : "");
                 setIdCliente(pedido.cliente != null ? pedido.cliente.idCliente : "");
-                setNombreCliente(pedido.cliente != null ? pedido.cliente.nombreEmpleado : "");
+                setNombreCliente(pedido.cliente != null ? pedido.cliente.nombreCliente : "");
                 setIdEmpleado(pedido.empleado != null ? pedido.empleado.idEmpleado : 0);
                 setSumas(pedido.sumas != null ? pedido.sumas : 0);
                 setImpuesto(pedido.impuesto != null ? pedido.impuesto : 0);

@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { show_alert } from '../../functions';
 import { NewEditPedidos } from './NewEditPedidos';
 
@@ -23,6 +21,18 @@ export const ShowPedidos = () => {
                 show_alert("Error al obtener la información del pedido", "error");
                 console.log(error);
             });
+    }
+
+    const eliminarPedidos = async (parametros) => {
+        await axios({ method: "POST", url: "/pedidos/deletePedido", data: parametros }).then(function (respuesta) {
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
+            show_alert(msj, tipo);
+            getPedidos();
+        }).catch(function (error) {
+            show_alert("Servicio no disponible.", "error");
+            console.log(error);
+        });
     }
 
     return (
@@ -54,11 +64,11 @@ export const ShowPedidos = () => {
                                         <td>{pedidos.empleado?.nombreEmpleado + ' ' + pedidos.empleado?.apellidoEmpleado}</td>
                                         <td>{pedidos.total}</td>
                                         <td>
-                                            <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalPedidos' onClick={() => pedidoModal.current.openModal(2, pedidos)}>
+                                            <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalPedido' onClick={() => pedidoModal.current.openModal(2, pedidos)}>
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
                                             &nbsp;
-                                            <button className='btn btn-danger'>
+                                            <button className='btn btn-danger' onClick={() => eliminarPedidos(pedidos)}>
                                                 <i className='fa-solid fa-trash' ></i>
                                             </button>
                                         </td>

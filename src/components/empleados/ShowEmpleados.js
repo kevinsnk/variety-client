@@ -25,6 +25,18 @@ export const ShowEmpleados = () => {
             });
     }
 
+    const eliminarEmpleado = async (parametros) => {
+        await axios({ method: "POST", url: "/empleados/deleteEmpleado", data: parametros }).then(function (respuesta) {
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
+            show_alert(msj, tipo);
+            getEmpleados();
+        }).catch(function (error) {
+            show_alert("Servicio no disponible.", "error");
+            console.log(error);
+        });
+    }
+
     return (
         <div className='App'>
             <div className='container-fluid'>
@@ -57,7 +69,7 @@ export const ShowEmpleados = () => {
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
                                             &nbsp;
-                                            <button className='btn btn-danger'>
+                                            <button className='btn btn-danger' onClick={() => eliminarEmpleado(empleado)}>
                                                 <i className='fa-solid fa-trash' ></i>
                                             </button>
                                         </td>

@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
 import { show_alert } from '../../functions';
 import { NewEditClient } from './NewEditClient';
 
@@ -22,6 +20,18 @@ export const ShowClients = () => {
             setClientes(respuesta.data.clientes);
         }).catch(function (error) {
             show_alert("Error al obtener la información del cliente", "error");
+            console.log(error);
+        });
+    }
+
+    const eliminarCliente = async (parametros) => {
+        await axios({ method: "POST", url: "/clients/deleteClient", data: parametros }).then(function (respuesta) {
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
+            show_alert(msj, tipo);
+            getClientes();
+        }).catch(function (error) {
+            show_alert("Servicio no disponible.", "error");
             console.log(error);
         });
     }
@@ -56,7 +66,7 @@ export const ShowClients = () => {
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
                                             &nbsp;
-                                            <button className='btn btn-danger'>
+                                            <button className='btn btn-danger' onClick={() => eliminarCliente(cliente)}>
                                                 <i className='fa-solid fa-trash' ></i>
                                             </button>
                                         </td>

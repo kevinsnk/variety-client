@@ -23,6 +23,18 @@ export const ShowPaquetes = () => {
             });
     }
 
+    const eliminarPaquete = async (parametros) => {
+        await axios({ method: "POST", url: "/paquete/deletePaquete", data: parametros }).then(function (respuesta) {
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
+            show_alert(msj, tipo);
+            getPaquetes();
+        }).catch(function (error) {
+            show_alert("Servicio no disponible.", "error");
+            console.log(error);
+        });
+    }
+
     return (
         <div className='App'>
             <div className='container-fluid'>
@@ -55,7 +67,7 @@ export const ShowPaquetes = () => {
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
                                             &nbsp;
-                                            <button className='btn btn-danger'>
+                                            <button className='btn btn-danger' onClick={() => eliminarPaquete(paquete)}>
                                                 <i className='fa-solid fa-trash' ></i>
                                             </button>
                                         </td>
