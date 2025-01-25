@@ -153,7 +153,7 @@ export const NewEditClient = forwardRef((props, ref) => {
             if (tipo === "0") {
                 document.getElementById("btnCerrar").click();
                 show_alert(msj, 'success');
-                props.getEmpleados();
+                props.getClientes();
             } else {
                 show_alert(msj, 'warning');
             }
