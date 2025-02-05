@@ -1,49 +1,36 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
 import { show_alert } from '../../functions';
 
 export const NewEditPedidos = forwardRef((props, ref) => {
 
-    const [idPedido, setIdPedido] = useState("");
-    const [cancelado, setCancelado] = useState("");
-    const [estado, setEstado] = useState("");
-    const [tipo, setTipo] = useState("");
-    const [numero, setNumero] = useState("");
-    const [fecha, setFecha] = useState("");
+    const [idPaquete, setIdPaquete] = useState("");
+    //const [fechaIngreso, setFechaIngreso] = useState("");
     const [fechaEntrega, setFechaEntrega] = useState("");
     const [idCliente, setIdCliente] = useState("");
-    const [nombreCliente, setNombreCliente] = useState("");
-    const [idEmpleado, setIdEmpleado] = useState("");
-    const [sumas, setSumas] = useState(0);
-    const [impuesto, setImpuesto] = useState(0);
-    const [total, setTotal] = useState(0);
+    const [saldo, setSaldo] = useState(0);
+    //const [impuesto, setImpuesto] = useState(0);
+    //const [total, setTotal] = useState(0);
+
+    const [paqueteSelected, setPaqueteSelected] = useState([]);
 
     const [empleados, setEmpleados] = useState([]);
     const [clientes, setClientes] = useState([]);
+    const [paquetes, setPaquetes] = useState([]);
 
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
 
     useImperativeHandle(ref, () => ({
         openModal(op, pedido) {
-            getEmpleados();
+            //getEmpleados();
+            getPaquetes();
             getClientes();
 
-            console.log("op", op);
-            console.log("pedido", pedido);
-            setIdPedido("");
-            setCancelado("");
-            setEstado("");
-            setTipo("");
-            setNumero("");
-            setFecha("");
+            setIdPaquete("");
             setFechaEntrega("");
             setIdCliente("");
-            setNombreCliente("");
-            setIdEmpleado("");
-            setSumas(0);
-            setImpuesto(0);
-            setTotal(0);
+            setSaldo(0);
 
             setOperation(op);
             if (op === 1) {
@@ -51,22 +38,13 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             } else if (op === 2) {
                 setTitle("Editar Pedidos");
 
-                setIdPedido(pedido.idPedido != null ? pedido.idPedido : "");
-                setCancelado(pedido.cancelado != null ? pedido.cancelado : "");
-                setEstado(pedido.estado != null ? pedido.estado : "");
-                setTipo(pedido.tipo != null ? pedido.tipo : "");
-                setNumero(pedido.numero != null ? pedido.numero : "");
-                setFecha(pedido.fecha != null ? pedido.fecha : "");
+                setIdPaquete(pedido.idPaquete != null ? pedido.idPaquete : "");
                 setFechaEntrega(pedido.fechaEntrega != null ? pedido.fechaEntrega : "");
-                setIdCliente(pedido.cliente != null ? pedido.cliente.idCliente : "");
-                setNombreCliente(pedido.cliente != null ? pedido.cliente.nombreCliente : "");
-                setIdEmpleado(pedido.empleado != null ? pedido.empleado.idEmpleado : 0);
-                setSumas(pedido.sumas != null ? pedido.sumas : 0);
-                setImpuesto(pedido.impuesto != null ? pedido.impuesto : 0);
-                setTotal(pedido.total != null ? pedido.total : 0);
+                setIdCliente(pedido.idCliente != null ? pedido.idCliente : "");
+                setSaldo(pedido.saldo != null ? pedido.saldo : "");
             }
             window.setTimeout(function () {
-                document.getElementById('cancelado').focus();
+                document.getElementById('idPaquete').focus();
             }, 500)
         }
     }))
@@ -75,25 +53,16 @@ export const NewEditPedidos = forwardRef((props, ref) => {
         var parametros;
         var metodo;
         var url;
-        if (cancelado.trim() === "") {
-            show_alert("El nombre del pedido no puede ir vacío", "warning");
-        } else if (tipo.trim() === "") {
-            show_alert("El tipo de pedido no puede ir vacío", "warning");
+        if (idPaquete.trim() === "") {
+            show_alert("El paquete no puede ir vacío", "warning");
+        } else if (idCliente.trim() === "") {
+            show_alert("El cliente no puede ir vacío", "warning");
         } else {
             parametros = {
-                idPedido: idPedido,
-                cancelado: cancelado,
-                estado: estado,
-                tipo: tipo,
-                numero: numero,
-                fecha: fecha,
+                idPaquete: idPaquete,
                 fechaEntrega: fechaEntrega,
                 idCliente: idCliente,
-                nombreCliente: nombreCliente,
-                idEmpleado: idEmpleado,
-                sumas: sumas,
-                impuesto: impuesto,
-                total: total,
+                saldo: saldo,
             };
             metodo = "POST"
             if (operation === 1) {
@@ -135,6 +104,17 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             });
     }
 
+    const getPaquetes = async () => {
+        await axios.get("/paquete/getAll")
+            .then(function (respuesta) {
+                console.log(respuesta.data.paquete);
+                setPaquetes(respuesta.data.paquete);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información del paquetes", "error");
+                console.log(error);
+            });
+    }
+
     const getClientes = async () => {
         console.log("Entro a getClientes()");
         await axios.get("/clients/getAll")
@@ -147,6 +127,15 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             });
     }
 
+    const seleccionarPaquete = (event) => {
+        setPaqueteSelected(paquetes[event.target.value]);
+        setIdPaquete(paqueteSelected?.idPaquete);
+    }
+
+    useEffect(() => {
+            setSaldo(paqueteSelected.pventa);
+        }, [idPaquete]);
+
     return (
         <div id='modalPedido' className='modal fade bd-example-modal-lg' aria-hidden='true'>
             <div className='modal-dialog modal-lg'>
@@ -158,34 +147,14 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                     <div className='modal-body'>
                         <div className='form-group'>
                             <input type='hidden' id='idPedido'></input>
-                            <label>Cancelado</label>
-                            <input type='text' id='cancelado' className='form-control' placeholder='Cancelado' value={cancelado}
-                                onChange={(e) => setCancelado(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Estado</label>
-                            <input type='text' id='estado' className='form-control' placeholder='Estado' value={estado}
-                                onChange={(e) => setEstado(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Tipo</label>
-                            <input type='text' id='tipo' className='form-control' placeholder='Tipo' value={tipo}
-                                onChange={(e) => setTipo(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Numero</label>
-                            <input type='text' id='numero' className='form-control' placeholder='Numero' value={numero}
-                                onChange={(e) => setNumero(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Fecha</label>
-                            <input type='date' id='fecha' className='form-control' placeholder="dd-mm-yyyy" value={fecha}
-                                onChange={(e) => setFecha(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Fecha Entreha</label>
-                            <input type='date' id='fechaEntrega' className='form-control' placeholder="dd-mm-yyyy" value={fechaEntrega}
-                                onChange={(e) => setFechaEntrega(e.target.value)}></input>
+                            <label>No. Paquete</label>
+                            <select id='idPaquete' className='form-control' placeholder='No. Paquete' value={idPaquete}
+                                onChange={seleccionarPaquete}>
+                                <option value="">Seleccionar una opción</option>
+                                {paquetes.map((paquete, i) => (
+                                    <option key={i} value={i}>{paquete.descripcion}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
                             <label>Cliente</label>
@@ -198,38 +167,14 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                             </select>
                         </div>
                         <div className='form-group'>
-                            <label>Empleado</label>
-                            <select id='idEmpleado' className='form-control' placeholder='Empleado' value={idEmpleado}
-                                onChange={(e) => setIdEmpleado(e.target.value)}>
-                                <option value="">Seleccionar una opción</option>
-                                {empleados.map((empleado, i) => (
-                                    <option value={empleado.idEmpleado}>{empleado.nombreEmpleado}</option>
-                                ))}
-                            </select>
+                            <label>Fecha Entrega</label>
+                            <input type='date' id='fechaEntrega' className='form-control' placeholder="dd-mm-yyyy" value={fechaEntrega}
+                                onChange={(e) => setFechaEntrega(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
-                            <label>Sumas</label>
-                            <input type='text' id='sumas' className='form-control' placeholder='Sumas' value={sumas}
-                                onChange={(e) => setSumas(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Impuesto</label>
-                            <input type='text' id='impuestos' className='form-control' placeholder='Impuesto' value={impuesto}
-                                onChange={(e) => setImpuesto(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Total</label>
-                            <input type='text' id='total' className='form-control' placeholder='Total' value={total}
-                                onChange={(e) => setTotal(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Tipo Pedido</label>
-                            <select id='tipo' className='form-control' value={tipo}
-                                onChange={(e) => setTipo(e.target.value)}>
-                                <option value="">Seleccionar una opción</option>
-                                <option value="1">Administrador</option>
-                                <option value="2">Operador</option>
-                            </select>
+                            <label>Saldo</label>
+                            <input type='text' id='saldo' className='form-control' placeholder='Saldo' value={saldo} disabled='true'
+                                onChange={(e) => setSaldo(e.target.value)}></input>
                         </div>
                         <br />
                         <div className='d-grid col-6 mx-auto'>

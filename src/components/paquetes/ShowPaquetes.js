@@ -60,8 +60,8 @@ export const ShowPaquetes = () => {
                                     <tr key={paquete.idPaquete}>
                                         <td>{paquete.idPaquete}</td>
                                         <td>{paquete.descripcion.trim()}</td>
-                                        <td>{paquete.pCosto}</td>
-                                        <td>{paquete.pVenta}</td>
+                                        <td>{paquete.pcosto}</td>
+                                        <td>{paquete.pventa}</td>
                                         <td>
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalPaquete' onClick={() => paqueteModal.current.openModal(2, paquete)}>
                                                 <i className='fa-solid fa-edit' ></i>

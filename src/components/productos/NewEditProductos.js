@@ -68,27 +68,27 @@ export const NewEditProductos = forwardRef((props, ref) => {
         var parametros;
         var metodo;
         var url;
-        if (descripcion.trim() === "") {
+        if (descripcion === "") {
             show_alert("La descripcion no puede ir vacío", "warning");
-        } else if (descripPrint.trim() === "") {
+        } else if (descripPrint === "") {
             show_alert("La descripcion print no puede ir vacío", "warning");
-        } else if (grupo.trim() === "") {
+        } else if (grupo === "") {
             show_alert("El grupo de producto no puede ir vacío", "warning");
         } else {
             parametros = {
                 idProducto: idProducto,
                 descripcion: descripcion.trim(),
                 descripPrint: descripPrint.trim(),
-                grupo: grupo.trim(),
-                tipo: tipo.trim(),
-                uniCompra: uniCompra.trim(),
-                valCompra: valCompra.trim(),
-                uniVenta: uniVenta.trim(),
-                valVenta: valVenta.trim(),
-                uniInvent: uniInvent.trim(),
-                valInvent: valInvent.trim(),
-                serie: serie.trim(),
-                lote: lote.trim()
+                grupo: grupo,
+                tipo: tipo,
+                uniCompra: uniCompra,
+                valCompra: valCompra,
+                uniVenta: uniVenta,
+                valVenta: valVenta,
+                uniInvent: uniInvent,
+                valInvent: valInvent,
+                serie: serie,
+                lote: lote
             };
             metodo = "POST"
             if (operation === 1) {
@@ -109,7 +109,7 @@ export const NewEditProductos = forwardRef((props, ref) => {
             if (tipo === "0") {
                 document.getElementById("btnCerrar").click();
                 show_alert(msj, 'success');
-                props.getEmpleados();
+                props.getProductos();
             } else {
                 show_alert(msj, 'warning');
             }
@@ -148,16 +148,6 @@ export const NewEditProductos = forwardRef((props, ref) => {
                             <label>Tipo</label>
                             <input type='text' id='tipo' className='form-control' placeholder='Tipo' value={tipo}
                                 onChange={(e) => setTipo(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Unidad Compra</label>
-                            <input type='text' id='uniCompra' className='form-control' placeholder='Unidad Compra' value={uniCompra}
-                                onChange={(e) => setUniCompra(e.target.value)}></input>
-                        </div>
-                        <div className='form-group'>
-                            <label>Valor Compra</label>
-                            <input type='text' id='valCompra' className='form-control' placeholder='Valor Compra' value={valCompra}
-                                onChange={(e) => setValCompra(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
                             <label>Unidad Compra</label>
