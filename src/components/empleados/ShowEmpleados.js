@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
-import { show_alert } from '../../functions';
+import { show_alert, searchFunction } from '../../functions';
 import { NewEditEmpleados } from './NewEditEmpleados';
 
 export const ShowEmpleados = () => {
@@ -51,9 +51,12 @@ export const ShowEmpleados = () => {
                 </div>
             </div>
             <div className='row mt-3'>
+                <div className='col-lg-3 offset-0 offset-lg-2'>
+                    <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..." />
+                </div>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
                     <div className='table-responsive'>
-                        <table className='table table-bordered'>
+                        <table id="myTable"  className='table table-bordered'>
                             <thead>
                                 <tr><th>ID</th><th>NOMBRE</th><th>Tipo Empleado</th><th>Estado</th><th>ACCIONES</th></tr>
                             </thead>
@@ -80,7 +83,7 @@ export const ShowEmpleados = () => {
                     </div>
                 </div>
             </div>
-            <NewEditEmpleados ref={empleadoModal} getEmpleados={() => getEmpleados()}/>
+            <NewEditEmpleados ref={empleadoModal} getEmpleados={() => getEmpleados()} />
         </div>
     )
 }

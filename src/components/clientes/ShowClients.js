@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { show_alert } from '../../functions';
+import { show_alert, searchFunction } from '../../functions';
 import { NewEditClient } from './NewEditClient';
 
 export const ShowClients = () => {
@@ -50,9 +50,12 @@ export const ShowClients = () => {
                 </div>
             </div>
             <div className='row mt-3'>
+                <div className='col-lg-3 offset-0 offset-lg-2'>
+                    <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..." />
+                </div>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
                     <div className='table-responsive'>
-                        <table className='table table-bordered'>
+                        <table id="myTable" className='table table-bordered'>
                             <thead>
                                 <tr><th>ID</th><th>NOMBRE</th><th>ACCIONES</th></tr>
                             </thead>
@@ -63,7 +66,7 @@ export const ShowClients = () => {
                                         <td>{cliente.nombreCliente}</td>
                                         <td>
                                             <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>
-                                            <i class="fa-solid fa-money-check-dollar"></i>
+                                                <i class="fa-solid fa-money-check-dollar"></i>
                                             </button>
                                             &nbsp;
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>

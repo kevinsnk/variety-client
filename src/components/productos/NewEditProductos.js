@@ -72,8 +72,26 @@ export const NewEditProductos = forwardRef((props, ref) => {
             show_alert("La descripcion no puede ir vacío", "warning");
         } else if (descripPrint === "") {
             show_alert("La descripcion print no puede ir vacío", "warning");
-        } else if (grupo === "") {
+        }else if (grupo === "") {
             show_alert("El grupo de producto no puede ir vacío", "warning");
+        }else if (tipo === "") {
+            show_alert("El tipo no puede ir vacío", "warning");
+        }else if (uniCompra === "") {
+            show_alert("Unidad de compra no puede ir vacío", "warning");
+        }else if (valCompra === "") {
+            show_alert("Valor Compra no puede ir vacío", "warning");
+        }else if (uniVenta === "") {
+            show_alert("Unidad Venta no puede ir vacío", "warning");
+        }else if (valVenta === "") {
+            show_alert("Valor Venta no puede ir vacío", "warning");
+        }else if (uniInvent === "") {
+            show_alert("Unidad Inventario no puede ir vacío", "warning");
+        }else if (valInvent === "") {
+            show_alert("Valor Inventario no puede ir vacío", "warning");
+        }else if (serie === "") {
+            show_alert("Serie no puede ir vacío", "warning");
+        }else if (lote === "") {
+            show_alert("Lote no puede ir vacío", "warning");
         } else {
             parametros = {
                 idProducto: idProducto,

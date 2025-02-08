@@ -18,17 +18,18 @@ function onfocus(foco) {
 
 export function searchFunction() {
     console.log("ENTRA A LA FUNCION");
-    var input, filter, table, tr, td, i, j, txtValue;
+    var input, filter, table, tr, td, tdLenght, i, j, txtValue;
     input = document.getElementById("myInput");
     filter = input.value.toUpperCase();
     console.log(filter);
     table = document.getElementById("myTable");
-    console.log(table);
     tr = table.getElementsByTagName("tr");
-    console.log(tr);
+    tdLenght = table.getElementsByTagName("td");
+    console.log(tr.length);
+    console.log(tdLenght.length);
 
     for (i = 0; i < tr.length; i++) {
-        for (j = 0; j < tr.length; j++) {
+        for (j = 0; j < tdLenght.length; j++) {
             td = tr[i].getElementsByTagName("td")[j];
             if (td) {
                 txtValue = td.textContent || td.innerText;

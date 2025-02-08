@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
-import { show_alert } from '../../functions';
+import { show_alert, searchFunction } from '../../functions';
 import { NewEditPedidos } from './NewEditPedidos';
 
 export const ShowPedidos = () => {
@@ -49,9 +49,12 @@ export const ShowPedidos = () => {
                 </div>
             </div>
             <div className='row mt-3'>
+                <div className='col-lg-3 offset-0 offset-lg-2'>
+                    <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..." />
+                </div>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
                     <div className='table-responsive'>
-                        <table className='table table-bordered'>
+                        <table id="myTable"  className='table table-bordered'>
                             <thead>
                                 <tr><th>DESCRIPCIÓN</th><th>CLIENTE</th><th>FECHA ASIGNACIÓN</th><th>SALDO</th><th>ACCIONES</th></tr>
                             </thead>

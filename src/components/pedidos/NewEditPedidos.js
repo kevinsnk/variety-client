@@ -55,9 +55,14 @@ export const NewEditPedidos = forwardRef((props, ref) => {
         var url;
         if (idPaquete === "") {
             show_alert("El paquete no puede ir vacío", "warning");
+        } else if (fechaAsignacion === "") {
+            show_alert("La fecha de asignación no puede ir vacío", "warning");
         } else if (idCliente === "") {
-            show_alert("El cliente no puede ir vacío", "warning");
-        } else {
+            show_alert("Tiene que seleccionar un cliente", "warning");
+        } 
+        else if (saldo === "") {
+            show_alert("El saldo no puede ir vacío", "warning");
+        }else {
             parametros = {
                 idPaquete: idPaquete,
                 fechaAsignacion: fechaAsignacion,
