@@ -5,14 +5,14 @@ import Navbar from './components/Navbar.js';
 import { ShowPaquetes } from './components/paquetes/ShowPaquetes.js';
 import { ShowPedidos } from './components/pedidos/ShowPedidos.js';
 import { ShowProductos } from './components/productos/ShowProductos.js';
-import Sidebar from './components/Sidebar.js';
+import MenuLateral from './components/MenuLateral.js';
+import './estilos/css/Style.css';
 
 function App() {
   return (
     <>
 
       <Navbar></Navbar>
-      <Sidebar></Sidebar>
       <div id="main">
         <Routes>
           <Route path='/clientes' element={<ShowClients></ShowClients>}></Route>

@@ -130,6 +130,11 @@ export const NewEditProductos = forwardRef((props, ref) => {
                     <div className='modal-body'>
                         <div className='form-group'>
                             <input type='hidden' id='idProducto'></input>
+                            <label>ID Producto</label>
+                            <input type='text' id='idProducto' className='form-control' placeholder='ID Producto ' value={idProducto}
+                                onChange={(e) => setIdProducto(e.target.value)}></input>
+                        </div>
+                        <div className='form-group'>
                             <label>Descripcion</label>
                             <input type='text' id='descripcion' className='form-control' placeholder='Descripcio ' value={descripcion}
                                 onChange={(e) => setDescripcion(e.target.value)}></input>

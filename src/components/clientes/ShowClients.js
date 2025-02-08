@@ -13,18 +13,18 @@ export const ShowClients = () => {
     }, []);
 
     const getClientes = async () => {
-        console.log("Entro a getClientes()");
         await axios.get("/clients/getAll")
-        .then(function (respuesta) {
-            console.log(respuesta.data.clientes);
-            setClientes(respuesta.data.clientes);
-        }).catch(function (error) {
-            show_alert("Error al obtener la información del cliente", "error");
-            console.log(error);
-        });
+            .then(function (respuesta) {
+                console.log(respuesta.data.clientes);
+                setClientes(respuesta.data.clientes);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información del cliente", "error");
+                console.log(error);
+            });
     }
 
     const eliminarCliente = async (parametros) => {
+        console.log(parametros);
         await axios({ method: "POST", url: "/clients/deleteClient", data: parametros }).then(function (respuesta) {
             var tipo = respuesta.data.codigo;
             var msj = respuesta.data.descripcion;
@@ -62,6 +62,10 @@ export const ShowClients = () => {
                                         <td>{cliente.idCliente}</td>
                                         <td>{cliente.nombreCliente}</td>
                                         <td>
+                                            <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>
+                                            <i class="fa-solid fa-money-check-dollar"></i>
+                                            </button>
+                                            &nbsp;
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
@@ -77,7 +81,7 @@ export const ShowClients = () => {
                     </div>
                 </div>
             </div>
-            <NewEditClient ref={clienteModal} getclientes={()=> getClientes()} />
+            <NewEditClient ref={clienteModal} getClientes={() => getClientes()} />
         </div>
     )
 }

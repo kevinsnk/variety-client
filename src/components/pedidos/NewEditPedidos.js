@@ -6,7 +6,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
 
     const [idPaquete, setIdPaquete] = useState("");
     //const [fechaIngreso, setFechaIngreso] = useState("");
-    const [fechaEntrega, setFechaEntrega] = useState("");
+    const [fechaAsignacion, setFechaAsignacion] = useState("");
     const [idCliente, setIdCliente] = useState("");
     const [saldo, setSaldo] = useState(0);
     //const [impuesto, setImpuesto] = useState(0);
@@ -28,7 +28,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             getClientes();
 
             setIdPaquete("");
-            setFechaEntrega("");
+            setFechaAsignacion("");
             setIdCliente("");
             setSaldo(0);
 
@@ -39,7 +39,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                 setTitle("Editar Pedidos");
 
                 setIdPaquete(pedido.idPaquete != null ? pedido.idPaquete : "");
-                setFechaEntrega(pedido.fechaEntrega != null ? pedido.fechaEntrega : "");
+                setFechaAsignacion(pedido.fechaAsignacion != null ? pedido.fechaAsignacion : "");
                 setIdCliente(pedido.idCliente != null ? pedido.idCliente : "");
                 setSaldo(pedido.saldo != null ? pedido.saldo : "");
             }
@@ -53,23 +53,21 @@ export const NewEditPedidos = forwardRef((props, ref) => {
         var parametros;
         var metodo;
         var url;
-        if (idPaquete.trim() === "") {
+        if (idPaquete === "") {
             show_alert("El paquete no puede ir vacío", "warning");
-        } else if (idCliente.trim() === "") {
+        } else if (idCliente === "") {
             show_alert("El cliente no puede ir vacío", "warning");
         } else {
             parametros = {
                 idPaquete: idPaquete,
-                fechaEntrega: fechaEntrega,
+                fechaAsignacion: fechaAsignacion,
                 idCliente: idCliente,
                 saldo: saldo,
+                entregado : 1
             };
+            console.log(parametros);
             metodo = "POST"
-            if (operation === 1) {
-                url = "/pedidos/savePedido";
-            } else {
-                url = "/pedidos/editPedido";
-            }
+            url = "/pedidos/editPedido";
 
             enviarSolicitud(parametros, metodo, url);
         }
@@ -91,17 +89,6 @@ export const NewEditPedidos = forwardRef((props, ref) => {
             show_alert("Servicio no disponible.", "error");
             console.log(error);
         });
-    }
-
-    const getEmpleados = async () => {
-        await axios.get("/empleados/getAll")
-            .then(function (respuesta) {
-                console.log(respuesta.data.empleados);
-                setEmpleados(respuesta.data.empleados);
-            }).catch(function (error) {
-                show_alert("Error al obtener la información del empleado", "error");
-                console.log(error);
-            });
     }
 
     const getPaquetes = async () => {
@@ -128,13 +115,13 @@ export const NewEditPedidos = forwardRef((props, ref) => {
     }
 
     const seleccionarPaquete = (event) => {
+        setIdPaquete(paquetes[event.target.value]?.idPaquete);
         setPaqueteSelected(paquetes[event.target.value]);
-        setIdPaquete(paqueteSelected?.idPaquete);
     }
 
     useEffect(() => {
-            setSaldo(paqueteSelected.pventa);
-        }, [idPaquete]);
+        setSaldo(paqueteSelected.pcosto != null ? paqueteSelected.pcosto : 0);
+    }, [paqueteSelected]);
 
     return (
         <div id='modalPedido' className='modal fade bd-example-modal-lg' aria-hidden='true'>
@@ -148,7 +135,7 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                         <div className='form-group'>
                             <input type='hidden' id='idPedido'></input>
                             <label>No. Paquete</label>
-                            <select id='idPaquete' className='form-control' placeholder='No. Paquete' value={idPaquete}
+                            <select id='idPaquete' className='form-control' placeholder='No. Paquete'
                                 onChange={seleccionarPaquete}>
                                 <option value="">Seleccionar una opción</option>
                                 {paquetes.map((paquete, i) => (
@@ -168,8 +155,8 @@ export const NewEditPedidos = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Fecha Entrega</label>
-                            <input type='date' id='fechaEntrega' className='form-control' placeholder="dd-mm-yyyy" value={fechaEntrega}
-                                onChange={(e) => setFechaEntrega(e.target.value)}></input>
+                            <input type='date' id='fechaAsignacion' className='form-control' placeholder="dd-mm-yyyy" value={fechaAsignacion}
+                                onChange={(e) => setFechaAsignacion(e.target.value)}></input>
                         </div>
                         <div className='form-group'>
                             <label>Saldo</label>

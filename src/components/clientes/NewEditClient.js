@@ -90,8 +90,8 @@ export const NewEditClient = forwardRef((props, ref) => {
                 setLatitud(cliente.latitud != null ? cliente.latitud : "");
                 setLongitud(cliente.longitud != null ? cliente.longitud : "");
                 setCtaContableCliente(cliente.ctaContableCliente != null ? cliente.ctaContableCliente : "");
-                setIdEmpleado(cliente.idEmpleado != null ? cliente.idEmpleado : "");
-                setActivo(cliente.Activo != null ? cliente.Activo : "");
+                setIdEmpleado(cliente.idEmpleado != null ? cliente.idEmpleado?.idEmpleado : "");
+                setActivo(cliente.activo != null ? cliente.activo : "");
             }
             window.setTimeout(function () {
                 document.getElementById('nombreCliente').focus();
@@ -107,33 +107,33 @@ export const NewEditClient = forwardRef((props, ref) => {
             show_alert("El nombre del cliente no puede ir vacío", "warning");
         } else if (nombreComercial.trim() === "") {
             show_alert("El nombre comercial del cliente no puede ir vacío", "warning");
-        } else if (grupoCliente.trim() === "") {
+        } else if (grupoCliente === "") {
             show_alert("El grupo cliente no puede ir vacío", "warning");
         } else {
             parametros = {
-                idCliente: idCliente.trim(),
+                idCliente: idCliente,
                 nombreCliente: nombreCliente.trim(),
                 nombreComercial: nombreComercial.trim(),
-                grupoCliente: grupoCliente.trim(),
-                direccionCliente: direccionCliente.trim(),
-                paisCliente: paisCliente.trim(),
-                departamentoCliente: departamentoCliente.trim(),
-                municipioCliente: municipioCliente.trim(),
-                telefonoCliente: telefonoCliente.trim(),
-                celularCliente: celularCliente.trim(),
-                emailCliente: emailCliente.trim(),
-                nrcCliente: nrcCliente.trim(),
-                nitCliente: nitCliente.trim(),
-                duiCliente: duiCliente.trim(),
-                giroCliente: giroCliente.trim(),
-                contactoCliente: contactoCliente.trim(),
-                sitioWebCliente: sitioWebCliente.trim(),
-                whatsappCliente: whatsappCliente.trim(),
-                latitud: latitud.trim(),
-                longitud: longitud.trim(),
-                ctaContableCliente: ctaContableCliente.trim(),
-                idEmpleado: idEmpleado.trim(),
-                activo: activo.trim()
+                grupoCliente: grupoCliente,
+                direccionCliente: direccionCliente,
+                paisCliente: paisCliente,
+                departamentoCliente: departamentoCliente,
+                municipioCliente: municipioCliente,
+                telefonoCliente: telefonoCliente,
+                celularCliente: celularCliente,
+                emailCliente: emailCliente,
+                nrcCliente: nrcCliente,
+                nitCliente: nitCliente,
+                duiCliente: duiCliente,
+                giroCliente: giroCliente,
+                contactoCliente: contactoCliente,
+                sitioWebCliente: sitioWebCliente,
+                whatsappCliente: whatsappCliente,
+                latitud: latitud,
+                longitud: longitud,
+                ctaContableCliente: ctaContableCliente,
+                idEmpleado: idEmpleado,
+                activo: activo
             };
             metodo = "POST"
             if (operation === 1) {

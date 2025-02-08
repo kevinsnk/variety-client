@@ -53,17 +53,20 @@ export const ShowPedidos = () => {
                     <div className='table-responsive'>
                         <table className='table table-bordered'>
                             <thead>
-                                <tr><th>ID</th><th>ESTADO</th><th>CLIENTE</th><th>EMPLEADO</th><th>TOTAL</th><th>ACCIONES</th></tr>
+                                <tr><th>DESCRIPCIÓN</th><th>CLIENTE</th><th>FECHA ASIGNACIÓN</th><th>SALDO</th><th>ACCIONES</th></tr>
                             </thead>
                             <tbody>
                                 {pedidos.map((pedidos, i) => (
-                                    <tr key={pedidos.idPedido}>
-                                        <td>{pedidos.idPedido}</td>
-                                        <td>{pedidos.estado} </td>
-                                        <td>{pedidos.cliente?.nombreCliente} </td>
-                                        <td>{pedidos.empleado?.nombreEmpleado + ' ' + pedidos.empleado?.apellidoEmpleado}</td>
-                                        <td>{pedidos.total}</td>
+                                    <tr key={pedidos.idPaquete}>
+                                        <td>{pedidos.descripcion}</td>
+                                        <td>{pedidos.cliente?.nombreCliente}</td>
+                                        <td>{pedidos.fechaAsignacion} </td>
+                                        <td>{pedidos.saldo} </td>
                                         <td>
+                                            <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalPedido' onClick={() => pedidoModal.current.openModal(2, pedidos)}>
+                                                <i class="fa-solid fa-money-check-dollar"></i>
+                                            </button>
+                                            &nbsp;
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalPedido' onClick={() => pedidoModal.current.openModal(2, pedidos)}>
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
@@ -79,7 +82,7 @@ export const ShowPedidos = () => {
                     </div>
                 </div>
             </div>
-            <NewEditPedidos ref={pedidoModal} getPedidos={() => getPedidos()}/>
+            <NewEditPedidos ref={pedidoModal} getPedidos={() => getPedidos()} />
         </div>
     )
 }
