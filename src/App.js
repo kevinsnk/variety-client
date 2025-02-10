@@ -5,6 +5,7 @@ import Navbar from './components/Navbar.js';
 import { ShowPaquetes } from './components/paquetes/ShowPaquetes.js';
 import { ShowPedidos } from './components/pedidos/ShowPedidos.js';
 import { ShowProductos } from './components/productos/ShowProductos.js';
+import { ShowCuentasxCobrar } from './components/cuentasxcobrar/ShowCuentasxCobrar.js';
 import MenuLateral from './components/MenuLateral.js';
 import './estilos/css/Style.css';
 
@@ -20,6 +21,7 @@ function App() {
           <Route path='/paquetes' element={<ShowPaquetes></ShowPaquetes>}></Route>
           <Route path='/pedidos' element={<ShowPedidos></ShowPedidos>}></Route>
           <Route path='/productos' element={<ShowProductos></ShowProductos>}></Route>
+          <Route path='/cuentasxcobrar' element={<ShowCuentasxCobrar></ShowCuentasxCobrar>}></Route>
         </Routes>
       </div>
 
