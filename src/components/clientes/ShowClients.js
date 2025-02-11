@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { show_alert, searchFunction } from '../../functions';
 import { NewEditClient } from './NewEditClient';
+import { NewCuentaXCobrar } from '../cuentasxcobrar/NewCuentaXCobrar.js'
 
 export const ShowClients = () => {
 
     const clienteModal = useRef();
+    const cuentasxCobrarModal = useRef();
     const [clientes, setClientes] = useState([]);
 
     useEffect(() => {
@@ -65,7 +67,7 @@ export const ShowClients = () => {
                                         <td>{cliente.idCliente}</td>
                                         <td>{cliente.nombreCliente}</td>
                                         <td>
-                                            <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => clienteModal.current.openModal(2, cliente)}>
+                                            <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalMovimientos' onClick={() => cuentasxCobrarModal.current.openModal(cliente)}>
                                                 <i class="fa-solid fa-money-check-dollar"></i>
                                             </button>
                                             &nbsp;
@@ -85,6 +87,7 @@ export const ShowClients = () => {
                 </div>
             </div>
             <NewEditClient ref={clienteModal} getClientes={() => getClientes()} />
+            <NewCuentaXCobrar ref={cuentasxCobrarModal}/>
         </div>
     )
 }

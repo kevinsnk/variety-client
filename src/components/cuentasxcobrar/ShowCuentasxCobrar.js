@@ -27,7 +27,7 @@ export const ShowCuentasxCobrar = forwardRef((props, ref) => {
             .then(function (respuesta) {
                 setlistaCXC(respuesta.data.paquete);
             }).catch(function (error) {
-                show_alert("Error al obtener la información del paquetes", "error");
+                show_alert("Error al obtener la información del cuentas x cobrar", "error");
                 console.log(error);
             });
     }
