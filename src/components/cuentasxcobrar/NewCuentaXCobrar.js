@@ -1,6 +1,6 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
 import axios from 'axios';
-import { show_alert, searchFunction } from '../../functions';
+import { show_alert } from '../../functions';
 
 export const NewCuentaXCobrar = forwardRef((props, ref) => {
 
@@ -11,17 +11,14 @@ export const NewCuentaXCobrar = forwardRef((props, ref) => {
     const [montoPagado, setMontoPagado] = useState(0);
     const [referencia, setReferencia] = useState("");
 
+    const [saldoTotal, setSaldoTotal] = useState(0);
+
     const [listaMovimientos, setListaMovimientos] = useState([]);
-    const [listaCXC, setlistaCXC] = useState([]);
-
-    const [movimientos, setMovimientos] = useState([]);
-
-    const [title, setTitle] = useState("");
-    const [operation, setOperation] = useState(1);
 
 
     useImperativeHandle(ref, () => ({
         openModal(cliente) {
+
             console.log(cliente);
             setIdCobro("");
             setFechaCobro("");
@@ -38,14 +35,19 @@ export const NewCuentaXCobrar = forwardRef((props, ref) => {
         }
     }))
 
-    const getMovimientosByClient = async (parametros) => {
-        await axios({ method: "GET", url: "/cxc/getMovimientosByClient", data: parametros }).then(function (respuesta) {
-            setMovimientos(respuesta.data.movimientos);
-        }).catch(function (error) {
-            show_alert("Servicio no disponible.", "error");
-            console.log(error);
-        });
+    const getMovimientosByClient = async (idCliente) => {
+        await axios.get("cxc/getMovimientosByClient?idCliente=" + idCliente)
+            .then(function (respuesta) {
+                setListaMovimientos(respuesta.data.movimientos);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información de productos", "error");
+                console.log(error);
+            });
     }
+
+    useEffect(() => {
+        setSaldoTotal(listaMovimientos[0]?.saldoTotal);
+    }, [listaMovimientos]);
 
     const validarFormulario = () => {
         var parametros;
@@ -90,24 +92,25 @@ export const NewCuentaXCobrar = forwardRef((props, ref) => {
                         <div className='table-responsive'>
                             <table id="myTable" className='table table-bordered'>
                                 <thead>
-                                    <tr><th>CLIENTE</th><th>DESCRIPCIÓN</th><th>DEBITOS</th><th>CRÉDITOS</th><th>SALDOS</th><th>ACCIONES</th></tr>
+                                    <tr><th>CLIENTE</th><th>DESCRIPCIÓN</th><th>DEBITO</th><th>CRÉDITO</th><th>SALDO</th></tr>
                                 </thead>
                                 <tbody>
-                                    {movimientos.map((movimiento, i) => (
+                                    {listaMovimientos.map((movimiento, i) => (
                                         <tr>
                                             <td>{movimiento.cliente.nombreCliente.trim()}</td>
                                             <td>{movimiento.descripcion.trim()}</td>
                                             <td>{movimiento.debito}</td>
                                             <td>{movimiento.credito}</td>
                                             <td>{movimiento.saldo}</td>
-                                            <td>
-                                                <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalClients' onClick={() => console.log("xDDD")}>
-                                                    <i class="fa-solid fa-money-check-dollar"></i>
-                                                </button>
-                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" className="textAlignRight">Saldo Total</th>
+                                        <td colspan="1">{saldoTotal}</td>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

@@ -112,7 +112,7 @@ export const NewEditPaquetes = forwardRef((props, ref) => {
     }
 
     const getDetallePaquete = async (idPaquete) => {
-        await axios.get("paquete/getDetallePaquete?idPaquete=" + idPaquete)
+        await axios.get("/paquete/getDetallePaquete?idPaquete=" + idPaquete)
             .then(function (respuesta) {
                 setDetalleProductos(respuesta.data.detaPaquetes);
             }).catch(function (error) {
@@ -152,13 +152,14 @@ export const NewEditPaquetes = forwardRef((props, ref) => {
     }
 
     useEffect(() => {
+        console.log("producto", producto);
         setDetaProducto(producto.descripcion);
         setCosto(producto.valCompra);
         setVenta(producto.valVenta);
     }, [producto]);
 
     useEffect(() => {
-        console.log(detalleProductos);
+        console.log("detalleProductos", detalleProductos);
         for (let i = 0; i < detalleProductos.length; i++) {
             setPCosto(pCosto + detalleProductos[i]?.costo);
             setPVenta(pVenta + + detalleProductos[i]?.venta);

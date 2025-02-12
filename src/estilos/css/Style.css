@@ -7,3 +7,7 @@
     border: 1px solid #ddd;
     margin-bottom: 12px;
 }
+
+.textAlignRight {
+    text-align: right;
+}

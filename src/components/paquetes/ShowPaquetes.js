@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { show_alert, searchFunction } from '../../functions';
 import { NewEditPaquetes } from './NewEditPaquetes';
+import { AsignarPaquetexBodega } from './AsignarPaquetexBodega';
 
 export const ShowPaquetes = () => {
 
     const paqueteModal = useRef();
+    const asignacionBodega = useRef();
     const [paquetes, setPaquetes] = useState([]);
 
     useEffect(() => {
@@ -42,16 +44,23 @@ export const ShowPaquetes = () => {
                     <div className='col-md-4 offset-md-4'>
                         <div className='d-grid mx-auto'>
                             <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalPaquete' onClick={() => paqueteModal.current.openModal(1)}>
-                                <i className='fa-solid fa-circle-plus'></i>Añadir
+                                <i className='fa-solid fa-circle-plus'></i> Añadir
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
             <div className='row mt-3'>
-                <div className='col-lg-3 offset-0 offset-lg-2'>
-                    <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..."/>
-                </div>
+                    <div className='col-md-4 offset-md-2'>
+                        <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..." />
+                    </div>
+                    <div className='col-md-4 offset-md-2'>
+                        <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalAsignarBodega' onClick={() => asignacionBodega.current.openModalAsignacionBodega()}>
+                            <i className='fa-solid fa-floppy-disk'></i> Asignar Bodega
+                        </button>
+                    </div>
+            </div>
+            <div className='row mt-3'>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
                     <div className='table-responsive'>
                         <table id="myTable" className='table table-bordered'>
@@ -82,6 +91,7 @@ export const ShowPaquetes = () => {
                 </div>
             </div>
             <NewEditPaquetes ref={paqueteModal} getPaquetes={() => getPaquetes()} />
+            <AsignarPaquetexBodega ref={asignacionBodega} />
         </div>
     )
 }
