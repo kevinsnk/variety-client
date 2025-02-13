@@ -16,6 +16,9 @@ export const AsignarPaquetexBodega = forwardRef((props, ref) => {
             getPaquetesXAsignar();
             getBodegas();
 
+            setIdBodega([]);
+            setPaquetesSelected([]);
+
             window.setTimeout(function () {
                 document.getElementById('descripcionPaquete').focus();
             }, 500)
@@ -53,11 +56,51 @@ export const AsignarPaquetexBodega = forwardRef((props, ref) => {
     }
 
     const validarFormulario = () => {
+        var parametros;
+        var metodo;
+        var url;
+        if(idBodega === ""){
+            show_alert("Debe de seleccionar una bodega", "error");
+        }else if(paquetesSelected.length < 1){
+            show_alert("Debe de elegir al menos un paquete para asignar a la bodega", "error");
+        }else{
+            parametros = {
+                idBodega: idBodega,
+                listaPaquetes: paquetesSelected
+            };
+            metodo = "POST"
+            url = "/paquete/asignarPaquetes";
 
+            enviarSolicitud(parametros, metodo, url);
+        }
+    }
+
+    const enviarSolicitud = async (parametros, metodo, url) => {
+        await axios({ method: metodo, url: url, data: parametros }).then(function (respuesta) {
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
+            show_alert(msj, tipo);
+            if (tipo === "0") {
+                document.getElementById("btnCerrar").click();
+                show_alert(msj, 'success');
+                props.getPaquetes();
+            } else {
+                show_alert(msj, 'warning');
+            }
+        }).catch(function (error) {
+            show_alert("Servicio no disponible.", "error");
+            console.log(error);
+        });
     }
 
     const agregarPaquete = () => {
-        setPaquetesSelected(paquetesSelected => [...paquetesSelected, paquete]);
+        console.log(paquete);
+        if(paquete?.idPaquete){
+            setPaquetesSelected(paquetesSelected => [...paquetesSelected, paquete]);
+            setPaquete([]);
+        }else{
+            show_alert("Debe de elegir un paquete", 'warning');
+        }
     }
 
     return (
