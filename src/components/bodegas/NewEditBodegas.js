@@ -21,16 +21,20 @@ export const NewEditBodegas = forwardRef((props, ref) => {
             setOperation(op);
             if (op === 1) {
                 setTitle("Registrar Bodega");
+                window.setTimeout(function () {
+                    document.getElementById('idBodega').focus();
+                }, 500)
             } else if (op === 2) {
                 setTitle("Editar Bodega");
 
                 setIdBodega(bodega?.idBodega);
                 setDescripcion(bodega?.descripcion);
                 setUbicacionFi(bodega?.ubicacionFi);
+
+                window.setTimeout(function () {
+                    document.getElementById('descripcion').focus();
+                }, 500)
             }
-            window.setTimeout(function () {
-                document.getElementById('descripcionPaquete').focus();
-            }, 500)
         }
     }))
 

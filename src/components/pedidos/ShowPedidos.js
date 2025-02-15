@@ -2,10 +2,12 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { show_alert, searchFunction } from '../../functions';
 import { NewEditPedidos } from './NewEditPedidos';
+import { NewCuentaXCobrar } from '../cuentasxcobrar/NewCuentaXCobrar.js'
 
 export const ShowPedidos = () => {
 
     const pedidoModal = useRef();
+    const cuentasxCobrarModal = useRef();
     const [pedidos, setPedidos] = useState([]);
 
     useEffect(() => {
@@ -54,7 +56,7 @@ export const ShowPedidos = () => {
                 </div>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
                     <div className='table-responsive'>
-                        <table id="myTable"  className='table table-bordered'>
+                        <table id="myTable" className='table table-bordered'>
                             <thead>
                                 <tr><th>DESCRIPCIÓN</th><th>CLIENTE</th><th>FECHA ASIGNACIÓN</th><th>SALDO</th><th>ACCIONES</th></tr>
                             </thead>
@@ -66,7 +68,7 @@ export const ShowPedidos = () => {
                                         <td>{pedidos.fechaAsignacion} </td>
                                         <td>{pedidos.saldo} </td>
                                         <td>
-                                            <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalPedido' onClick={() => pedidoModal.current.openModal(2, pedidos)}>
+                                            <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalMovimientos' onClick={() => cuentasxCobrarModal.current.openModal(pedidos.cliente)}>
                                                 <i class="fa-solid fa-money-check-dollar"></i>
                                             </button>
                                             &nbsp;
@@ -86,6 +88,7 @@ export const ShowPedidos = () => {
                 </div>
             </div>
             <NewEditPedidos ref={pedidoModal} getPedidos={() => getPedidos()} />
+            <NewCuentaXCobrar ref={cuentasxCobrarModal} />
         </div>
     )
 }

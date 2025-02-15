@@ -53,7 +53,41 @@ export const NewCuentaXCobrar = forwardRef((props, ref) => {
         var parametros;
         var metodo;
         var url;
+        if (idCliente === "") {
+            show_alert("El Cliente no puede ir vacío", "warning");
+        } else if (montoPagado === 0) {
+            show_alert("Debe de poner el monto a pagar", "warning");
+        } else if (referencia === "") {
+            show_alert("Tiene que poner un documento de referencia", "warning");
+        } else {
+            parametros = {
+                estado: "1",
+                montoPagado: montoPagado,
+                idCliente: idCliente,
+                referencia: referencia
+            };
+            metodo = "POST"
+            url = "/cxc/saveCXC";
 
+            enviarSolicitud(parametros, metodo, url);
+        }
+    }
+
+    const enviarSolicitud = async (parametros, metodo, url) => {
+        await axios({ method: metodo, url: url, data: parametros }).then(function (respuesta) {
+            var tipo = respuesta.data.codigo;
+            var msj = respuesta.data.descripcion;
+            show_alert(msj, tipo);
+            if (tipo === "0") {
+                document.getElementById("btnCerrar").click();
+                show_alert(msj, 'success');
+            } else {
+                show_alert(msj, 'warning');
+            }
+        }).catch(function (error) {
+            show_alert("Servicio no disponible.", "error");
+            console.log(error);
+        });
     }
 
     return (
@@ -84,7 +118,7 @@ export const NewCuentaXCobrar = forwardRef((props, ref) => {
                         <br />
                         <div className='d-grid col-6 mx-auto'>
                             <button className='btn btn-success' onClick={() => validarFormulario()}>
-                                <i className='fa-solid fa-floppy-disk'></i> Guardar
+                                <i className='fa-solid fa-floppy-disk'></i> Pagar Cuota
                             </button>
                         </div>
                     </div>

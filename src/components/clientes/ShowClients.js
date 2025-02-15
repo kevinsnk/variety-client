@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { show_alert, searchFunction } from '../../functions';
 import { NewEditClient } from './NewEditClient';
-import { NewCuentaXCobrar } from '../cuentasxcobrar/NewCuentaXCobrar.js'
+import { NewCuentaXCobrar } from '../cuentasxcobrar/NewCuentaXCobrar.js';
 
 export const ShowClients = () => {
 
