@@ -18,11 +18,16 @@ export const NewEditProductos = forwardRef((props, ref) => {
     const [serie, setSerie] = useState("");
     const [lote, setLote] = useState("");
 
+    const [unidades, setUnidades] = useState([]);
+
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
 
     useImperativeHandle(ref, () => ({
         openModal(op, producto) {
+
+            getUnidades();
+
             console.log(producto);
             setIdProducto("");
             setDescripcion("");
@@ -64,6 +69,17 @@ export const NewEditProductos = forwardRef((props, ref) => {
         }
     }))
 
+    const getUnidades = async () => {
+        await axios.get("/unidades/getAll")
+            .then(function (respuesta) {
+                console.log(respuesta.data.unidades);
+                setUnidades(respuesta.data.unidades);
+            }).catch(function (error) {
+                show_alert("Error al obtener la información de las unidades", "error");
+                console.log(error);
+            });
+    }
+
     const validarFormulario = () => {
         var parametros;
         var metodo;
@@ -72,25 +88,25 @@ export const NewEditProductos = forwardRef((props, ref) => {
             show_alert("La descripcion no puede ir vacío", "warning");
         } else if (descripPrint === "") {
             show_alert("La descripcion print no puede ir vacío", "warning");
-        }else if (grupo === "") {
+        } else if (grupo === "") {
             show_alert("El grupo de producto no puede ir vacío", "warning");
-        }else if (tipo === "") {
+        } else if (tipo === "") {
             show_alert("El tipo no puede ir vacío", "warning");
-        }else if (uniCompra === "") {
+        } else if (uniCompra === "") {
             show_alert("Unidad de compra no puede ir vacío", "warning");
-        }else if (valCompra === "") {
+        } else if (valCompra === "") {
             show_alert("Valor Compra no puede ir vacío", "warning");
-        }else if (uniVenta === "") {
+        } else if (uniVenta === "") {
             show_alert("Unidad Venta no puede ir vacío", "warning");
-        }else if (valVenta === "") {
+        } else if (valVenta === "") {
             show_alert("Valor Venta no puede ir vacío", "warning");
-        }else if (uniInvent === "") {
+        } else if (uniInvent === "") {
             show_alert("Unidad Inventario no puede ir vacío", "warning");
-        }else if (valInvent === "") {
+        } else if (valInvent === "") {
             show_alert("Valor Inventario no puede ir vacío", "warning");
-        }else if (serie === "") {
+        } else if (serie === "") {
             show_alert("Serie no puede ir vacío", "warning");
-        }else if (lote === "") {
+        } else if (lote === "") {
             show_alert("Lote no puede ir vacío", "warning");
         } else {
             parametros = {
@@ -174,8 +190,13 @@ export const NewEditProductos = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Unidad Compra</label>
-                            <input type='text' id='uniCompra' className='form-control' placeholder='Unidad Compra' value={uniCompra}
-                                onChange={(e) => setUniCompra(e.target.value)}></input>
+                            <select id='uniCompra' className='form-control' placeholder='Unidad Compra' value={uniCompra}
+                                onChange={(e) => setUniCompra(e.target.value)}>
+                                <option value="">Seleccionar una opción</option>
+                                {unidades.map((unidad, i) => (
+                                    <option value={unidad.idUnidad}>{unidad.descripcion}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
                             <label>Valor Compra</label>
@@ -184,8 +205,13 @@ export const NewEditProductos = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Unidad Venta</label>
-                            <input type='text' id='uniVenta' className='form-control' placeholder='Unidad Venta' value={uniVenta}
-                                onChange={(e) => setUniVenta(e.target.value)}></input>
+                            <select id='uniVenta' className='form-control' placeholder='Unidad Venta' value={uniVenta}
+                                onChange={(e) => setUniVenta(e.target.value)}>
+                                <option value="">Seleccionar una opción</option>
+                                {unidades.map((unidad, i) => (
+                                    <option value={unidad.idUnidad}>{unidad.descripcion}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
                             <label>Valor Venta</label>
@@ -194,8 +220,13 @@ export const NewEditProductos = forwardRef((props, ref) => {
                         </div>
                         <div className='form-group'>
                             <label>Unidad Inventario</label>
-                            <input type='text' id='uniInvent' className='form-control' placeholder='Unidad Inventario' value={uniInvent}
-                                onChange={(e) => setUniInvent(e.target.value)}></input>
+                            <select id='uniInvent' className='form-control' placeholder='Unidad Inventario' value={uniInvent}
+                                onChange={(e) => setUniInvent(e.target.value)}>
+                                <option value="">Seleccionar una opción</option>
+                                {unidades.map((unidad, i) => (
+                                    <option value={unidad.idUnidad}>{unidad.descripcion}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className='form-group'>
                             <label>Valor Inventario</label>

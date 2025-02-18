@@ -2,12 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import { show_alert, searchFunction } from '../../functions';
 import { NewEditPedidos } from './NewEditPedidos';
-import { NewCuentaXCobrar } from '../cuentasxcobrar/NewCuentaXCobrar.js'
+import { NewCuentaXCobrar } from '../cuentasxcobrar/NewCuentaXCobrar.js';
+import { DetallePaquete } from '../paquetes/DetallePaquete.js';
 
 export const ShowPedidos = () => {
 
     const pedidoModal = useRef();
     const cuentasxCobrarModal = useRef();
+    const detallePaqueteModal = useRef();
     const [pedidos, setPedidos] = useState([]);
 
     useEffect(() => {
@@ -68,6 +70,10 @@ export const ShowPedidos = () => {
                                         <td>{pedidos.fechaAsignacion} </td>
                                         <td>{pedidos.saldo} </td>
                                         <td>
+                                            <button className='btn btn-info' data-bs-toggle='modal' data-bs-target='#detallePaquete' onClick={() => detallePaqueteModal.current.openModalDetalle(pedidos)}>
+                                                <i className='fa-solid fa-eye' ></i>
+                                            </button>
+                                            &nbsp;
                                             <button className='btn btn-success' data-bs-toggle='modal' data-bs-target='#modalMovimientos' onClick={() => cuentasxCobrarModal.current.openModal(pedidos.cliente)}>
                                                 <i class="fa-solid fa-money-check-dollar"></i>
                                             </button>
@@ -89,6 +95,7 @@ export const ShowPedidos = () => {
             </div>
             <NewEditPedidos ref={pedidoModal} getPedidos={() => getPedidos()} />
             <NewCuentaXCobrar ref={cuentasxCobrarModal} />
+            <DetallePaquete ref={detallePaqueteModal} />
         </div>
     )
 }

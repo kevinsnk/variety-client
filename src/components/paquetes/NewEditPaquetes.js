@@ -1,6 +1,7 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect, forwardRef, useImperativeHandle, useRef } from 'react';
 import axios from 'axios';
 import { show_alert } from '../../functions';
+import { useReactToPrint } from "react-to-print";
 
 export const NewEditPaquetes = forwardRef((props, ref) => {
 
@@ -22,6 +23,9 @@ export const NewEditPaquetes = forwardRef((props, ref) => {
 
     const [title, setTitle] = useState("");
     const [operation, setOperation] = useState(1);
+
+    const contentRef = React.useRef();
+    const reactToPrintFn = useReactToPrint({ contentRef });
 
     useImperativeHandle(ref, () => ({
         openModal(op, paquete) {
@@ -173,7 +177,7 @@ export const NewEditPaquetes = forwardRef((props, ref) => {
 
     return (
         <>
-            <div id='modalPaquete' className='modal fade bd-example-modal-lg' aria-hidden='true'>
+            <div id='modalPaquete' className='modal fade bd-example-modal-lg' aria-hidden='true' ref={contentRef}>
                 <div className='modal-dialog modal-lg'>
                     <div className='modal-content'>
                         <div className='modal-header'>
@@ -230,10 +234,14 @@ export const NewEditPaquetes = forwardRef((props, ref) => {
                                     <i className='fa-solid fa-floppy-disk'></i> Guardar
                                 </button>
                             </div>
+                            <div className='d-grid col-6 mx-auto'>
+                                <button className='btn btn-success' onClick={() => reactToPrintFn()}>
+                                    <i className='fa-solid fa-floppy-disk'></i> Imprimir
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div id='modalProducto' className='modal fade bd-example-modal-lg' aria-hidden='true'>

@@ -3,11 +3,13 @@ import axios from 'axios';
 import { show_alert, searchFunction } from '../../functions';
 import { NewEditPaquetes } from './NewEditPaquetes';
 import { AsignarPaquetexBodega } from './AsignarPaquetexBodega';
+import { DetallePaquete } from './DetallePaquete';
 
 export const ShowPaquetes = () => {
 
     const paqueteModal = useRef();
     const asignacionBodega = useRef();
+    const detallePaqueteModal = useRef();
     const [paquetes, setPaquetes] = useState([]);
 
     useEffect(() => {
@@ -51,14 +53,14 @@ export const ShowPaquetes = () => {
                 </div>
             </div>
             <div className='row mt-3'>
-                    <div className='col-md-4 offset-md-2'>
-                        <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..." />
-                    </div>
-                    <div className='col-md-4 offset-md-2'>
-                        <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalAsignarBodega' onClick={() => asignacionBodega.current.openModalAsignacionBodega()}>
-                            <i className='fa-solid fa-floppy-disk'></i> Asignar Bodega
-                        </button>
-                    </div>
+                <div className='col-md-4 offset-md-2'>
+                    <input type="text" id="myInput" onKeyUp={() => searchFunction()} placeholder="Buscar..." />
+                </div>
+                <div className='col-md-4 offset-md-2'>
+                    <button className='btn btn-dark' data-bs-toggle='modal' data-bs-target='#modalAsignarBodega' onClick={() => asignacionBodega.current.openModalAsignacionBodega()}>
+                        <i className='fa-solid fa-floppy-disk'></i> Asignar Bodega
+                    </button>
+                </div>
             </div>
             <div className='row mt-3'>
                 <div className='col-12 col-lg-8 offset-0 offset-lg-2'>
@@ -75,6 +77,10 @@ export const ShowPaquetes = () => {
                                         <td>{paquete.pcosto}</td>
                                         <td>{paquete.pventa}</td>
                                         <td>
+                                            <button className='btn btn-info' data-bs-toggle='modal' data-bs-target='#detallePaquete' onClick={() => detallePaqueteModal.current.openModalDetalle(paquete)}>
+                                                <i className='fa-solid fa-eye' ></i>
+                                            </button>
+                                            &nbsp;
                                             <button className='btn btn-warning' data-bs-toggle='modal' data-bs-target='#modalPaquete' onClick={() => paqueteModal.current.openModal(2, paquete)}>
                                                 <i className='fa-solid fa-edit' ></i>
                                             </button>
@@ -92,6 +98,7 @@ export const ShowPaquetes = () => {
             </div>
             <NewEditPaquetes ref={paqueteModal} getPaquetes={() => getPaquetes()} />
             <AsignarPaquetexBodega ref={asignacionBodega} />
+            <DetallePaquete ref={detallePaqueteModal} />
         </div>
     )
 }
